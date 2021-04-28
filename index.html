@@ -11,6 +11,20 @@
 
 <!-- Load d3.js -->
 <script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://unpkg.com/d3@6.7.0/dist/d3.min.js"></script>
+
+<!-- Load dataset -->
+<script>
+  const fetchCsv = async (url) => {
+    const response = await fetch(url);
+    return await response.text();
+  };
+  const url = ''
+
+  fetchCsv(url).then(text => {
+    console.log(text)
+  });
+</script>
 
 
 <script>
