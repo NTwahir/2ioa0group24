@@ -7,10 +7,10 @@ const url = 'https://raw.githubusercontent.com/NTwahir/2ioa0group24/master/data/
 function App() {
   const [data, setData] = useState(["placeholder data"])
   
-  // csv(url).then(data => {
-  //   console.log(data);
-  //   setData(data);
-  // });
+  csv(url).then(data => {
+    console.log(data);
+    setData(data);
+  });
   
   return (
     <>
