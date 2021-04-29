@@ -5,7 +5,7 @@ import { csv } from 'd3'
 const url = 'https://raw.githubusercontent.com/NTwahir/2ioa0group24/master/data/enron-v1.csv'
 
 function App() {
-  const [data, setData] = useState(["placeholder data"])
+  const [data, setData] = useState(null)
   
   // Determines how often the dataset gets requested.
   useEffect(() => {
