@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import NodeGraph from './NodeGraph'
-import { csv } from 'd3'
+import React, { useEffect, useState } from 'react';
+import NodeGraph from './NodeGraph';
+import { csv } from 'd3';
 
 const url = 'https://raw.githubusercontent.com/NTwahir/2ioa0group24/master/data/enron-v1.csv'
 
@@ -13,12 +13,14 @@ function App() {
     csv(url).then(setData);
   }, []);
 
-  if(!data) return <div>Loading...</div>;
+  if(!data) return <div>Loading... </div>;
 
   return (
-    <>
-    <NodeGraph data={data}/>
-    </>
+    <div className="App" id="test">
+      <h1>Bar Chart of E-mails sent per user</h1>
+      <div id="viz1"></div>
+      <NodeGraph data={data}/>
+    </div>
   )
 }
 
