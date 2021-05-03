@@ -1,5 +1,6 @@
-import { scaleBand, scaleLinear, select, axisBottom, axisLeft, max, selectAll } from 'd3';
-import { nest } from 'd3-collection'
+import { scaleBand, scaleLinear, select, axisBottom, axisLeft, max, selectAll, selection } from 'd3';
+import * as d3 from'd3';
+import { nest } from 'd3-collection';
 import React from 'react';
 
 export default function NodeGraph({ data }) {
@@ -9,8 +10,6 @@ export default function NodeGraph({ data }) {
         .key(d => d.fromEmail)
         .rollup(v => v.length)
         .entries(data);
-    console.log(numberSent, max(numberSent, n => n.value))
-
 
     // set the dimensions and margins of the graph
     var margin = {top: 30, right: 30, bottom: 151, left: 60},
@@ -18,7 +17,7 @@ export default function NodeGraph({ data }) {
     height = 1080 - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
-    var svg = select("#viz1")
+    var svg = select("#root")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -48,6 +47,11 @@ export default function NodeGraph({ data }) {
     // Bars
     svg.selectAll("mybar")
     .data(numberSent)
+    .exit()
+    .remove()
+
+    svg.selectAll("mybar")
+    .data(numberSent)
     .enter()
     .append("rect")
     .attr("x", function(d) { return x(d.key); })
@@ -56,10 +60,27 @@ export default function NodeGraph({ data }) {
     .attr("height", function(d) { return height - y(d.value); })
     .attr("fill", "#69b3a2")
 
-    return (
+
+    // Console debugging
+    const debug = () => {
+        var max_val = max(numberSent, n => n.value);
+        console.log({numberSent, max_val, data});
+    }
+
+    // Event listener
+    svg.select("#options")
+    .on("change", console.log("he"))
+
+    const { columns } = data;
+   
+    return (debug(),
         <>
-            <h1>Bar Chart of E-mails sent per user</h1>
-            <div id="viz1"></div>
+            <br></br>
+            <select id="options">
+                <option value={columns[0]}>{columns[0]}</option>
+                <option value={columns[1]}>{columns[1]}</option>
+                <option value={columns[2]}>{columns[2]}</option>
+            </select>
         </>
     )
 }
