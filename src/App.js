@@ -3,6 +3,8 @@ import { csv } from 'd3';
 import Home from './pages/Home';
 import About from './pages/About';
 import Visualizations from './pages/Visualizations';
+import { Route, Link } from 'react-router-dom';
+import NodeGraph from './NodeGraph'
 
 const url = 'https://raw.githubusercontent.com/NTwahir/2ioa0group24/master/data/enron-v1.csv'
 
@@ -19,9 +21,10 @@ function App() {
 
   return (
     <div className="App">
-      <Home/>
-      <Visualizations data={data}/>
-      <About/>
+      <Route exact path="/" component={Home}/>
+      <Route exact path="/visualizations" render={() => (
+        <Visualizations data={data} />)}/>
+      <Route exact path="/about" component={About}/>
     </div>
   )
 }
