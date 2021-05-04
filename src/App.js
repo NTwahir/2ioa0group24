@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { NodeGraph } from './NodeGraph';
 import { csv } from 'd3';
+import { Route } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/About';
+import Visualizations from './pages/Visualizations';
+import NavBar from './NavBar';
 
 const url = 'https://raw.githubusercontent.com/NTwahir/2ioa0group24/master/data/enron-v1.csv'
 
@@ -17,8 +21,11 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Bar Chart of E-mails sent per user</h1>
-      <NodeGraph data={data}/>
+      <NavBar/>
+      <Route exact path="/" component={Home}/>
+      <Route exact path="/visualizations" render={() => (
+        <Visualizations data={data} />)}/>
+      <Route exact path="/about" component={About}/>
     </div>
   )
 }
