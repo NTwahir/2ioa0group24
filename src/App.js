@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { csv } from 'd3';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Visualizations from './pages/Visualizations';

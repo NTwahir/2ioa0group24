@@ -1,5 +1,5 @@
 import React from 'react';
-import NodeGraph from '../NodeGraph';
+import { NodeGraph } from '../NodeGraph';
 
 const Visualizations = ({ data }) => {
     return (
