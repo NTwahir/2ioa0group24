@@ -1,9 +1,11 @@
-import { scaleBand, scaleLinear, select, axisBottom, axisLeft, max, selectAll, selection } from 'd3';
-import * as d3 from'd3';
-import { nest } from 'd3-collection';
 import React from 'react';
+import { scaleBand, scaleLinear, select, axisBottom, axisLeft, max } from 'd3';
+import { nest } from 'd3-collection';
 
-export default function NodeGraph({ data }) {
+export var node = document.createElement('div');
+
+export function NodeGraph({ data }) {
+
     
     // Group by fromEmail and count
     var numberSent = nest()
@@ -12,26 +14,30 @@ export default function NodeGraph({ data }) {
         .entries(data);
 
     // set the dimensions and margins of the graph
-    var margin = {top: 30, right: 30, bottom: 151, left: 60},
-    width = 1920 - margin.left - margin.right,
-    height = 1080 - margin.top - margin.bottom;
+    const 
+    margin = {top: 30, right: 30, bottom: 150, left: 60},
+    width = 1920,
+    height = 1080,
+    innerWidth = width - margin.left - margin.right,
+    innerHeight = height - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
-    var svg = select("#root")
+    var svg = select(node)
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", innerWidth + margin.left + margin.right)
+    .attr("height", innerHeight + margin.top + margin.bottom)
     .append("g")
     .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
     // X axis
     var x = scaleBand()
-    .range([ 0, width ])
+    .range([ 0, innerWidth ])
     .domain(numberSent.map(function(d) { return d.key; }))
     .padding(0.2);
+
     svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(0," + innerHeight + ")")
     .call(axisBottom(x))
     .selectAll("text")
     .attr("transform", "translate(-10,0)rotate(-45)")
@@ -40,7 +46,7 @@ export default function NodeGraph({ data }) {
     // Add Y axis
     var y = scaleLinear()
     .domain([0, max(numberSent, n => n.value)])
-    .range([ height, 0]);
+    .range([ innerHeight, 0]);
     svg.append("g")
     .call(axisLeft(y));
 
@@ -57,7 +63,7 @@ export default function NodeGraph({ data }) {
     .attr("x", function(d) { return x(d.key); })
     .attr("y", function(d) { return y(d.value); })
     .attr("width", x.bandwidth())
-    .attr("height", function(d) { return height - y(d.value); })
+    .attr("height", function(d) { return innerHeight - y(d.value); })
     .attr("fill", "#69b3a2")
 
 
@@ -67,20 +73,28 @@ export default function NodeGraph({ data }) {
         console.log({numberSent, max_val, data});
     }
 
-    // Event listener
-    svg.select("#options")
-    .on("change", console.log("he"))
-
-    const { columns } = data;
-   
-    return (debug(),
+    debug()
+    console.log(svg._groups[0][0])
+    return (
         <>
-            <br></br>
-            <select id="options">
-                <option value={columns[0]}>{columns[0]}</option>
-                <option value={columns[1]}>{columns[1]}</option>
-                <option value={columns[2]}>{columns[2]}</option>
-            </select>
+            <svg width={width} height={height}>
+                <g transform={`translate(${margin.left}, ${margin.top})`}>
+                    <g
+                       transform={`translate(0, ${innerHeight})`}
+                       text-anchor="end"
+                    >{axisBottom(x)}</g>
+                    <g></g>
+                    {numberSent.map(d => (
+                        <rect 
+                            x={x(d.key)} 
+                            y={y(d.value)} 
+                            width={x.bandwidth()} 
+                            height={innerHeight - y(d.value)}
+                            fill="#69b3a2"
+                        />
+                    ))}
+                </g>
+            </svg>
         </>
     )
 }
