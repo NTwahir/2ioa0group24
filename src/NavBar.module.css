@@ -1,0 +1,8 @@
+.navbar {
+    text-align: left;
+    background-color: orange;
+}
+
+.navbar:hover {
+    background-color: orangered;
+}
