@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="App">
       <Home/>
-      <Visualizations/>
+      <Visualizations data={data}/>
       <About/>
     </div>
   )
