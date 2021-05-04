@@ -16,9 +16,7 @@ function App() {
   if(!data) return <div>Loading... </div>;
 
   return (
-    <div className="App" id="test">
-      <h1>Bar Chart of E-mails sent per user</h1>
-      <div id="viz1"></div>
+    <div className="App">
       <NodeGraph data={data}/>
     </div>
   )
