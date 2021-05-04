@@ -3,6 +3,16 @@
     background-color: orange;
 }
 
+.navbar li {
+    display: inline;
+    color: hsl(180, 29%, 50%);
+    position: relative;
+    background:hsl(180, 31%, 91%);
+    padding: 7.5px 8px 7.5px 8px;
+    border-radius: 5px;
+    margin: 0 1em 0 0;
+  }
+
 .navbar:hover {
     background-color: orangered;
 }
