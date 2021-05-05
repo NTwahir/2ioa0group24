@@ -81,11 +81,12 @@ export function NodeGraph({ data }) {
                 <g transform={`translate(${margin.left}, ${margin.top})`}>
                     <g
                        transform={`translate(0, ${innerHeight})`}
-                       text-anchor="end"
+                       textAnchor="end"
                     >{axisBottom(x)}</g>
                     <g></g>
                     {numberSent.map(d => (
                         <rect 
+                            key={d.key}
                             x={x(d.key)} 
                             y={y(d.value)} 
                             width={x.bandwidth()} 
