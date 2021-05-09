@@ -1,6 +1,6 @@
 import React from 'react';
 import { forceLink, forceManyBody, select, forceSimulation, forceCenter, json } from 'd3';
-import { nest } from 'd3-collection';
+import DataProcess from './DataProcess';
 
 const url = "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_network.json";
 
@@ -21,7 +21,6 @@ var svg = select("#root")
         "translate(" + margin.left + "," + margin.top + ")");
 
 json(url).then((data) => {
-
     // Initialize the links
     var link = svg
         .selectAll("line")
@@ -61,31 +60,41 @@ json(url).then((data) => {
             .attr("cx", function (d) { return d.x+6; })
             .attr("cy", function(d) { return d.y-6; });
     }
-    console.log({node, link})
 });
 
+let proData = DataProcess(data, null)[0];
+let data2 = DataProcess(data, null)[1];
+// let sim2 = forceSimulation(data2.nodes)
+// sim2.force("link", forceLink()                               // This force provides links between nodes
+//     .id(function(d) { return d.id; })                     // This provide  the id of a node
+//     .links(data.links)                                    // and this the list of links
+// )       
+console.log(data2);
+console.table(proData);
+
 return (
-    <svg width={400} height={400}>
+    <svg width={800} height={800}>
         <g transform={`translate(${margin.left}, ${margin.top})`}>
             <g className="links">
-            {data.columns.map(d => (
+            {proData.map(d => (
                 <circle
-                    key={d}
-                    r={20}
+                    key={d.key}
+                    r={5}
                     fill="#69b3a2"
-                    cx={1}
-                    cy={10}
+                    cx={d.key + Math.floor(Math.random() * 10)}
+                    cy={d.key + 2}
                 />
             ))}
             </g>
             <g className="nodes">
-            {data.map(d => (
+            {proData.map(d => (
                 <line
                     stroke="#aaa"
-                    x1={1}
-                    x2={100}
-                    y1={1}
-                    y2={1}
+                    key={d.key}
+                    x1={d.key + 2}
+                    x2={d.key + 10}
+                    y1={d.key + 2}
+                    y2={d.key + 10}
                 />
             ))}
             </g>

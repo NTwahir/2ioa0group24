@@ -74,7 +74,6 @@ export function NodeGraph({ data }) {
     }
 
     debug()
-    console.log(svg._groups[0][0])
     return (
         <>
             <svg width={width} height={height}>
