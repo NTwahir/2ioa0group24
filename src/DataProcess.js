@@ -1,8 +1,8 @@
 import React from 'react';
 import { nest } from 'd3-collection';
-import { ascending, descending, sum } from 'd3';
+import { ascending, sum } from 'd3';
 
-const DataProcess = (data, type) => {
+const DataProcess = (data) => {
 
     // Parse the data if needed
 
@@ -18,13 +18,18 @@ const DataProcess = (data, type) => {
     let nodes = [];
     let links = [];
 
+    let id = 1;
     uniqueNodes.forEach(n => {
         nodes.push({"name": n.key});
         n.values.forEach(v => {
-            links.push({"source": v.fromId, "target": v.toId});
+            links.push({"source": v.fromId, "target": "10"});
         });
     })
     let processedData = {"nodes": nodes, "links": links}
+
+    // Console debug
+    console.log(processedData);
+    console.log(uniqueNodes);
 
     return [uniqueNodes, processedData];
 }
