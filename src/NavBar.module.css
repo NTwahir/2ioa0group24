@@ -1,18 +1,24 @@
 .navbar {
+    overflow: hidden;
     text-align: left;
     background-color: orange;
 }
 
-.navbar li {
-    display: inline;
-    color: hsl(180, 29%, 50%);
-    position: relative;
-    background:hsl(180, 31%, 91%);
-    padding: 7.5px 8px 7.5px 8px;
-    border-radius: 5px;
-    margin: 0 1em 0 0;
+.navbar Link {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
   }
 
-.navbar:hover {
-    background-color: orangered;
+.navbar Link:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.navbar Link:active {
+    background-color: #c81919;
+    color: white;
 }
