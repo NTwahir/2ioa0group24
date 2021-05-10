@@ -6,17 +6,12 @@ const { navbar } = CSS;
 
 const NavBar = () => {
     return (
-        <ul className={navbar}>
-            <li>
-                <Link to="/">Home</Link>
-            </li>
-            <li>
-                <Link to="/visualizations">Visualizations</Link>
-            </li>
-            <li>
-                <Link to="/about">About Us</Link>
-            </li>
-        </ul>
+        <div className={navbar}>
+                <Link to="/" activeClassName="active">2IOAO Visualization Tool</Link>
+                <Link to="/" style={{float: 'right'}}>Home</Link>
+                <Link to="/visualizations" style={{float: 'right'}}>Visualizations</Link>
+                <Link to="/about" style={{float: 'right'}}>About Us</Link>
+        </div>
     )
 }
 
