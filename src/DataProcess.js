@@ -1,5 +1,6 @@
 import { nest } from 'd3-collection';
 import { ascending, sum } from 'd3';
+import _ from 'lodash';
 
 const DataProcess = (data) => {
 
@@ -7,7 +8,9 @@ const DataProcess = (data) => {
     data = data.filter(v => 
         v.toId !== '136' &&
         v.toId !== '78')
-
+    
+    // links: (source, target, thickness)
+    // Thickness = count # toId's per fromId
 
     // something with sentiment
         // TODO
@@ -29,14 +32,18 @@ const DataProcess = (data) => {
     uniqueNodes.forEach(n => {
         nodes.push({"name": n.key});
         n.values.forEach(v => {
-            links.push({"source": v.fromId, "target": v.toId});
+            let hasVal = _.some(links, ['target', v.toId])
+            if(!hasVal) {
+                links.push({"source": v.fromId, "target": v.toId});
+            }
         });
     })
-    
-    let processedData = {"nodes": nodes, "links": links};
 
+    let processedData = {"nodes": nodes, "links": links};
     // Console debug
-    console.log({uniqueNodes, processedData});
+    console.log({uniqueNodes, processedData, data});
+
+
 
     return processedData;
 }
