@@ -4,7 +4,7 @@ import { NodeGraph } from '../NodeGraph';
 const Visualizations = ({ data }) => {
     return (
         <div>
-            <h1>Bar Chart of E-mails sent per user</h1>
+            <h1>Node-edge graph of email network</h1>
             <NodeGraph data={data}/>
         </div>
     )

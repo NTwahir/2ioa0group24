@@ -1,18 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import CSS from './NavBar.module.css';
+import { Nav, Icon } from "tabler-react";
 
+<Icon prefix="fa" name="user" />;
 const { navbar } = CSS;
 
 const NavBar = () => {
     return (
         <div className={navbar}>
-                <Link to="/" activeClassName="active">2IOAO Visualization Tool</Link>
-                <Link to="/" style={{float: 'right'}}>Home</Link>
-                <Link to="/visualizations" style={{float: 'right'}}>Visualizations</Link>
-                <Link to="/about" style={{float: 'right'}}>About Us</Link>
+                <Nav>
+                    <Nav.Item to="/" value="2IOAO Visualization Tool" icon="home" />
+                    <Nav.Item to="/About" value="About Us" icon="globe" />
+                    <Nav.Item to="/Visualizations" value="Visualizations" icon="star" />
+                    <Nav.Item to="https://github.com/NTwahir/2ioa0group24" value="GitHub" icon="github" />
+                </Nav>
         </div>
     )
 }
+
+
+
 
 export default NavBar;

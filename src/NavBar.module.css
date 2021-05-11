@@ -1,24 +1,19 @@
 .navbar {
+    font-family: Trebuchet MS, Helvetica, sans-serif;
     overflow: hidden;
     text-align: left;
-    background-color: orange;
-}
-
-.navbar Link {
     float: left;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 16px;
+    padding: 0px 26px;
     text-decoration: none;
     font-size: 17px;
-  }
+}
 
-.navbar Link:hover {
+.navbar hover {
     background-color: #ddd;
     color: black;
 }
 
-.navbar Link:active {
+.navbar active {
     background-color: #c81919;
     color: white;
 }
