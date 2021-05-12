@@ -28,21 +28,65 @@ const DataProcess = (data) => {
     // Processs the dataset into nodes and links
     let nodes = [];
     let links = [];
+    let linkInfo = [];
+
+
+    // smt
+    let uniq2 = _.uniqBy(uniqueNodes, e => e.values[0].fromJobtitle);
+    let jobs = [];
+    let colors = [
+        "#003f5c",
+        "#2f4b7c",
+        "#665191",
+        "#a05195",
+        "#d45087",
+        "#f95d6a",
+        "#ff7c43",
+        "#ffa600",
+        "#488f31",
+        "#de425b",
+        "#69b3a2"
+    ];
+    uniq2.forEach(v => jobs.push(v.values[0].fromJobtitle));
+    let jobColor = _.zipObject(jobs, colors);
 
     uniqueNodes.forEach(n => {
-        nodes.push({"name": n.key});
+
+        let jobName = n.values[0].fromJobtitle;
+        nodes.push({
+            "name": n.key, 
+            "job": {
+                "name": jobName, 
+                "color": jobColor[jobName]
+            }
+        });
+
+        linkInfo.push({
+            "id": n.key, 
+            "job": jobName, 
+            "thickness": n.values.length
+        });
+
         n.values.forEach(v => {
-            let hasVal = _.some(links, ['target', v.toId])
+            
+            let hasVal = _.some(links, ['target', v.toId])          // Prevent duplicate links between nodes
             if(!hasVal) {
-                links.push({"source": v.fromId, "target": v.toId});
+                links.push({
+                    "source": v.fromId, 
+                    "target": v.toId
+                });
             }
         });
     })
 
     let processedData = {"nodes": nodes, "links": links};
-    // Console debug
-    console.log({uniqueNodes, processedData, data});
 
+    // Console debug
+    console.log({uniqueNodes, processedData, data, linkInfo, jobColor});
+    console.log(jobColor["CEO"]);
+
+    // TODO: get the count of msgs and append to links.thickness
+    // TODO: change color of node based on job title
 
 
     return processedData;
