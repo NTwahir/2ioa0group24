@@ -31,6 +31,7 @@ const NodeLink = (container, data) => {
         .enter()
         .append("line")
         .style("stroke", "#aaa")
+        .style("stroke-width", 2)
 
     // Initialize the nodes
     var node = svg
@@ -38,8 +39,13 @@ const NodeLink = (container, data) => {
         .data(nodes)
         .enter()
         .append("circle")
-        .attr("r", 5)
-        .style("fill", "#69b3a2")
+        .attr("r", 10)
+        .style("fill", n => n.job.color)
+
+    // Initialize text lable
+    var lables = svg.append("text")
+    .text("yo")
+    .attr("y", 20);
 
     // forceSimulation will generate (x,y) pairs for nodes and links,
     // which can be dynamically updated, for interaction.
