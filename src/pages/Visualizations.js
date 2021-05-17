@@ -1,11 +1,11 @@
 import React from 'react';
-import { NodeGraph } from '../NodeGraph'
+import { Graph } from '../Graph'
 
 const Visualizations = ({ data }) => {
     return (
         <div>
-            <h1>Node-edge graph of email network</h1>
-            <NodeGraph data={data}/>
+            <h1>Bar Chart of E-mails sent per user</h1>
+            <Graph data={data} />
         </div>
     )
 }
