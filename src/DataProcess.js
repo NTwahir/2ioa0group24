@@ -3,7 +3,7 @@ import { ascending, sum } from 'd3';
 import _ from 'lodash';
 
 const DataProcess = (data) => {
-
+    
     // Filtering out e-mails sent to non existant users
     data = data.filter(v => 
         v.toId !== '136' &&
