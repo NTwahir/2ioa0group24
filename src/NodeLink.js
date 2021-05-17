@@ -42,6 +42,11 @@ const NodeLink = (container, data) => {
         .attr("r", 10)
         .style("fill", n => n.job.color)
 
+    // Initialize text lable
+    var lables = svg.append("text")
+    .text("yo")
+    .attr("y", 20);
+
     // forceSimulation will generate (x,y) pairs for nodes and links,
     // which can be dynamically updated, for interaction.
     var simulation = forceSimulation(nodes);              // Force algorithm is applied to data.nodes

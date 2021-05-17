@@ -68,7 +68,7 @@ const DataProcess = (data) => {
         });
 
         n.values.forEach(v => {
-            
+
             let hasVal = _.some(links, ['target', v.toId])          // Prevent duplicate links between nodes
             if(!hasVal) {
                 links.push({
@@ -86,7 +86,6 @@ const DataProcess = (data) => {
     console.log(jobColor["CEO"]);
 
     // TODO: get the count of msgs and append to links.thickness
-    // TODO: change color of node based on job title
 
 
     return processedData;
