@@ -43,7 +43,7 @@ const NodeLink = (container, data) => {
         .style("fill", n => n.job.color)
 
     // Initialize text lable
-    var lables = svg.append("text")
+    var labels = svg.append("text")
     .text("yo")
     .attr("y", 20);
 
