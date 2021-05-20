@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-
 import "tabler-react/dist/Tabler.css";
-
 import { Tab, TabbedCard, Grid, Card } from "tabler-react";
 
 class Home extends Component {

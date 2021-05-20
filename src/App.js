@@ -22,7 +22,7 @@ function App() {
   return (
     <div className="App">
       <NavBar/>
-      <Route exact path="/home" component={Home}/>
+      <Route exact path="/" component={Home}/>
       <Route exact path="/visualizations" render={() => (
         <Visualizations data={data} />)}/>
       <Route exact path="/about" component={About}/>

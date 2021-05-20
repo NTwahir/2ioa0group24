@@ -3,17 +3,18 @@
     overflow: hidden;
     text-align: left;
     float: left;
-    padding: 0px 26px;
+    padding: 0px 483px;
     text-decoration: none;
     font-size: 17px;
+    background-color: #215B7A;
 }
 
 .navbar hover {
-    background-color: #ddd;
-    color: black;
+    background-color: #6AB1C7;
+    color: white;
 }
 
 .navbar active {
     background-color: #c81919;
-    color: white;
+    color: #6AB1C7;
 }
