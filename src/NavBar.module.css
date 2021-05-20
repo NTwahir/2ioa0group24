@@ -2,11 +2,12 @@
     font-family: Trebuchet MS, Helvetica, sans-serif;
     overflow: hidden;
     text-align: left;
-    float: left;
-    padding: 0px 483px;
+    padding: 0px 31.82%;
     text-decoration: none;
     font-size: 17px;
     background-color: #215B7A;
+    width: 100%;
+    margin: auto;
 }
 
 .navbar hover {
