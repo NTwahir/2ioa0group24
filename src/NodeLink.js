@@ -1,4 +1,4 @@
-import { forceLink, forceManyBody, select, forceSimulation, forceCenter } from 'd3';
+import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, schemeSet2 } from 'd3';
 import DataProcess from './DataProcess';
 
 
@@ -13,7 +13,20 @@ const NodeLink = (container, data) => {
     data = DataProcess(data);
 
     // Destructure data to prevent redundancy
-    const { nodes, links } = data;
+    const { nodes, links, jobs, jobColor } = data;
+    let colors = [
+        "#003f5c",
+        "#2f4b7c",
+        "#665191",
+        "#a05195",
+        "#d45087",
+        "#f95d6a",
+        "#ff7c43",
+        "#ffa600",
+        "#488f31",
+        "#de425b",
+        "#69b3a2"
+    ];
 
     // Append the svg object to the div containter
     var svg = select(container)
@@ -42,10 +55,31 @@ const NodeLink = (container, data) => {
         .attr("r", 10)
         .style("fill", n => n.job.color)
 
-    // Initialize text lable
-    var lables = svg.append("text")
-    .text("yo")
-    .attr("y", 20);
+    // Initialize Legend
+    var color = scaleOrdinal().domain(jobs).range(colors);
+
+    // Add one dot in the legend for each name.
+    svg.selectAll("mydots")
+    .data(jobs)
+    .enter()
+    .append("circle")
+    .attr("cx", width*3/4)
+    .attr("cy", (d,i) => 100 + i*25) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("r", 7)
+    .style("fill", d => color(d))
+
+    // Add one dot in the legend for each name.
+    svg.selectAll("mylabels")
+    .data(jobs)
+    .enter()
+    .append("text")
+    .attr("x", (width+20)*3/4)
+    .attr("y", (d,i) => 100 + i*25) // 100 is where the first dot appears. 25 is the distance between dots
+    .style("fill", d => color(d))
+    .text(d => d)
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle")
+
 
     // forceSimulation will generate (x,y) pairs for nodes and links,
     // which can be dynamically updated, for interaction.
