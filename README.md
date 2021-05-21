@@ -15,7 +15,7 @@ In the project directory, run:
 ### `npm install`
 
 Installs all the modules needed to run the tool.\
-NOTE: You first need to install Node.js, if you dont have Node.js installed on your pc.
+NOTE: You first need to have Node.js installed on your pc, if you dont have Node.js installed on your pc.
 
 In the project directory, you can run:
 
