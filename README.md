@@ -1,13 +1,15 @@
 # Getting Started with Create React App
 
 Visualization tool to view e-mail data from the company eron.\
-On first load bring you to the home page which displays some placeholder text, which will be used for the finished product.\
+On first load bring you to the home page.
+
+* Home page: Displays some placeholder text, which will be used for the finished product.\
 * About us page: Explaining some basic information about the tool, the dataset and us the developers.\
 * Visualizations page: Displays a Node-edge graph of emails using the eron.csv fetched from the web.\
 
 ## How to run the tool
 
-Open the folder you just unziped in a ide.\
+Open the folder you just unziped in a ide (for example VSCode).\
 In the project directory, run:
 
 ### `npm install`
