@@ -1,7 +1,6 @@
 import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, schemeSet2 } from 'd3';
 import DataProcess from './DataProcess';
 
-
 // Set the dimensions and margins of the graph
 const 
 margin = {top: 10, right: 30, bottom: 30, left: 40},
@@ -28,7 +27,7 @@ const NodeLink = (container, data) => {
         "#69b3a2"
     ];
 
-    // Append the svg object to the div containter
+    // Append the svg object to the div container
     var svg = select(container)
     .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -36,6 +35,10 @@ const NodeLink = (container, data) => {
     .append("g")
     .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
+
+    var div = select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
 
     // Initialize the links
     var link = svg
@@ -54,6 +57,19 @@ const NodeLink = (container, data) => {
         .append("circle")
         .attr("r", 10)
         .style("fill", n => n.job.color)
+        .on("mouseover", function(event,d) {
+            div.transition()
+              .duration(200)
+              .style("opacity", 1);
+              div.html("Job title: " + d.job.name)
+              .style("left", (event.pageX) + "px")
+              .style("top", (event.pageY - 28) + "px");
+            })
+          .on("mouseout", function(d) {
+            div.transition()
+              .duration(500)
+              .style("opacity", 0);
+            });
 
     // Initialize Legend
     var color = scaleOrdinal().domain(jobs).range(colors);
@@ -90,8 +106,8 @@ const NodeLink = (container, data) => {
         )
         .force("charge", forceManyBody().strength(-100))        // This adds repulsion between nodes.
         .force("center", forceCenter(width / 2, height / 2))    // This force attracts nodes to the center of the svg area
-        .on("end", ticked);                                     // The "end" tag specifies when the nodes (x,y) should change
-
+        .on("end", ticked)                                     // The "end" tag specifies when the nodes (x,y) should change
+        
     // This function is run at each iteration of the force algorithm, updating the nodes position.
     function ticked() {
         link
