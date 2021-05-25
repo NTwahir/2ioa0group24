@@ -60,8 +60,15 @@ const NodeLink = (container, data) => {
         .on("mouseover", function(event,d) {
             div.transition()
               .duration(200)
-              .style("opacity", 1);
+              .style("opacity", 1)
               div.html("Job title: " + d.job.name)
+              .style("position", "absolute")
+              .style("text-align", "center")
+              .style("padding", "5px")
+              .style("background", "white")
+              .style("border", "solid")
+              .style("border-width", "2px")
+              .style("border-radius", "5px")
               .style("left", (event.pageX) + "px")
               .style("top", (event.pageY - 28) + "px");
             })
