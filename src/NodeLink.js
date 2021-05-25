@@ -36,7 +36,8 @@ const NodeLink = (container, data) => {
     .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    var div = select("body").append("div")
+    // Create and append tooltip to the div container
+    var tooltip = select(container).append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
@@ -58,15 +59,15 @@ const NodeLink = (container, data) => {
         .attr("r", 10)
         .style("fill", n => n.job.color)
         .on("mouseover", function(event,d) {
-            div.transition()
+            tooltip.transition()
               .duration(200)
               .style("opacity", 1);
-              div.html("Job title: " + d.job.name)
+              tooltip.html("Job title: " + d.job.name)
               .style("left", (event.pageX) + "px")
               .style("top", (event.pageY - 28) + "px");
             })
           .on("mouseout", function(d) {
-            div.transition()
+            tooltip.transition()
               .duration(500)
               .style("opacity", 0);
             });
