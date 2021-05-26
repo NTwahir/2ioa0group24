@@ -1,4 +1,4 @@
-import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, zoom, zoomIdentity } from 'd3';
+import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, zoom, zoomIdentity, zoomTransform, pointer } from 'd3';
 import DataProcess from './DataProcess';
 
 // Set the dimensions and margins of the graph
@@ -27,11 +27,32 @@ const NodeLink = (container, data) => {
         "#69b3a2"
     ];
 
+
+    // Reset function
+    const reset = () => {
+      svg.transition().duration(750).call(
+          zoomAttr.transform,
+          zoomIdentity,
+          zoomTransform(svg.node()).invert([width / 2, height / 2])
+      );
+    }
+
+    // Zoom function
+    const zoomed = ({ transform }) => {
+      graph.attr("transform", transform);
+    }
+    
+
+    // Zoom attribute
+    const zoomAttr = zoom()
+        .scaleExtent([0.5,8])
+        .on("zoom", zoomed);
+
     // Append the svg object to the div container
     var svg = select(container)
     .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom);
+    .attr("viewBox", [0, 0, 2920, 2080])
+    .on("click", reset);
 
     // Create and append tooltip to the div container
     var tooltip = select(container).append("div")
@@ -78,27 +99,12 @@ const NodeLink = (container, data) => {
               .style("opacity", 0);
             });
 
-    // smt
-    // var zoomVar = zoom()                           
-    // .scaleExtent([1, Infinity])
-    // .translateExtent([[0, 0], [width, height]])
-    // .extent([[0, 0], [width, height]])
-    // .on("zoom", zoomFn(width));
-
-    function zoomFn(event, d) {
-      console.log(d.x, d.y)
-      svg.select('g')
-        .transition()
-        .duration(200)
-        .style("scale", d.x);
-    }
-
     // Add one dot in the legend for each name.
     legend.selectAll("mydots")
     .data(jobs)
     .enter()
     .append("circle")
-    .attr("cx", width*3/4)
+    .attr("cx", width)
     .attr("cy", (d,i) => 100 + i*25) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
     .style("fill", d => color(d))
@@ -108,19 +114,26 @@ const NodeLink = (container, data) => {
     .data(jobs)
     .enter()
     .append("text")
-    .attr("x", (width+20)*3/4)
+    .attr("x", (width+20))
     .attr("y", (d,i) => 100 + i*25) // 100 is where the first dot appears. 25 is the distance between dots
     .style("fill", d => color(d))
     .text(d => d)
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
 
-
     // On click functionality
     node
         .on("click", function(event, d) {
-        zoomFn(event, d);
-        event.stopPropagation();
+          const {x, y} = d;
+          event.stopPropagation();
+          svg.transition().duration(750).call(
+            zoomAttr.transform,
+            zoomIdentity
+              .translate(width / 2, height / 2)
+              .scale(Math.min(8, 0.9 / Math.max(x / width, y/ height)))
+              .translate(-x / 2, -y / 2),
+            pointer(event, svg.node())
+          );
       });
 
 
@@ -147,8 +160,7 @@ const NodeLink = (container, data) => {
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
     }
-
-return null;
+    svg.call(zoomAttr);
 }
 
 export default NodeLink;
