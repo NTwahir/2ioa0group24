@@ -142,11 +142,18 @@ const NodeLink = (container, data) => {
     // Mouse hover function
     function mouseOver(event,d) {
       tooltip.transition()
-        .duration(200)
-        .style("opacity", 1);
-        tooltip.html("Job title: " + d.job.name)
-        .style("left", (event.pageX) + "px")
-        .style("top", (event.pageY - 28) + "px");
+      .duration(200)
+      .style("opacity", 1)
+      tooltip.html("Job title: " + d.job.name)
+      .style("position", "absolute")
+      .style("text-align", "center")
+      .style("padding", "5px")
+      .style("background", "white")
+      .style("border", "solid")
+      .style("border-width", "2px")
+      .style("border-radius", "5px")
+      .style("left", (event.pageX) + "px")
+      .style("top", (event.pageY - 28) + "px");
     }
 
     // Click function
