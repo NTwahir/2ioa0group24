@@ -1,4 +1,4 @@
-import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, schemeSet2 } from 'd3';
+import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, zoom, zoomIdentity } from 'd3';
 import DataProcess from './DataProcess';
 
 // Set the dimensions and margins of the graph
@@ -31,18 +31,24 @@ const NodeLink = (container, data) => {
     var svg = select(container)
     .append("svg")
     .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
+    .attr("height", height + margin.top + margin.bottom);
 
     // Create and append tooltip to the div container
     var tooltip = select(container).append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
 
+    // Initialize Legend
+    var color = scaleOrdinal().domain(jobs).range(colors);
+    var legend = svg.append("g").attr("id", "legend");
+    var graph = svg
+    .append("g")
+    .attr("id", "graph")
+    .attr("transform",
+            `translate(${margin.left}, ${margin.top})`);
+
     // Initialize the links
-    var link = svg
+    var link = graph
         .selectAll("line")
         .data(links)
         .enter()
@@ -51,7 +57,7 @@ const NodeLink = (container, data) => {
         .style("stroke-width", 2)
 
     // Initialize the nodes
-    var node = svg
+    var node = graph
         .selectAll("circle")
         .data(nodes)
         .enter()
@@ -72,11 +78,23 @@ const NodeLink = (container, data) => {
               .style("opacity", 0);
             });
 
-    // Initialize Legend
-    var color = scaleOrdinal().domain(jobs).range(colors);
+    // smt
+    // var zoomVar = zoom()                           
+    // .scaleExtent([1, Infinity])
+    // .translateExtent([[0, 0], [width, height]])
+    // .extent([[0, 0], [width, height]])
+    // .on("zoom", zoomFn(width));
+
+    function zoomFn(event, d) {
+      console.log(d.x, d.y)
+      svg.select('g')
+        .transition()
+        .duration(200)
+        .style("scale", d.x);
+    }
 
     // Add one dot in the legend for each name.
-    svg.selectAll("mydots")
+    legend.selectAll("mydots")
     .data(jobs)
     .enter()
     .append("circle")
@@ -86,7 +104,7 @@ const NodeLink = (container, data) => {
     .style("fill", d => color(d))
 
     // Add one dot in the legend for each name.
-    svg.selectAll("mylabels")
+    legend.selectAll("mylabels")
     .data(jobs)
     .enter()
     .append("text")
@@ -96,6 +114,14 @@ const NodeLink = (container, data) => {
     .text(d => d)
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
+
+
+    // On click functionality
+    node
+        .on("click", function(event, d) {
+        zoomFn(event, d);
+        event.stopPropagation();
+      });
 
 
     // forceSimulation will generate (x,y) pairs for nodes and links,
@@ -120,7 +146,7 @@ const NodeLink = (container, data) => {
         node
             .attr("cx", function (d) { return d.x; })
             .attr("cy", function(d) { return d.y; });
-}
+    }
 
 return null;
 }
