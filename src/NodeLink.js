@@ -12,7 +12,7 @@ const NodeLink = (container, data) => {
     data = DataProcess(data);
 
     // Destructure data to prevent redundancy
-    const { nodes, links, jobs, jobColor } = data;
+    const { nodes, links, jobs } = data;
     let colors = [
         "#003f5c",
         "#2f4b7c",
@@ -26,27 +26,6 @@ const NodeLink = (container, data) => {
         "#de425b",
         "#69b3a2"
     ];
-
-
-    // Reset function
-    const reset = () => {
-      svg.transition().duration(750).call(
-          zoomAttr.transform,
-          zoomIdentity,
-          zoomTransform(svg.node()).invert([width / 2, height / 2])
-      );
-    }
-
-    // Zoom function
-    const zoomed = ({ transform }) => {
-      graph.attr("transform", transform);
-    }
-    
-
-    // Zoom attribute
-    const zoomAttr = zoom()
-        .scaleExtent([0.5,8])
-        .on("zoom", zoomed);
 
     // Append the svg object to the div container
     var svg = select(container)
@@ -64,9 +43,7 @@ const NodeLink = (container, data) => {
     var legend = svg.append("g").attr("id", "legend");
     var graph = svg
     .append("g")
-    .attr("id", "graph")
-    .attr("transform",
-            `translate(${margin.left}, ${margin.top})`);
+    .attr("id", "graph");
 
     // Initialize the links
     var link = graph
@@ -85,15 +62,11 @@ const NodeLink = (container, data) => {
         .append("circle")
         .attr("r", 10)
         .style("fill", n => n.job.color)
-        .on("mouseover", function(event,d) {
-            tooltip.transition()
-              .duration(200)
-              .style("opacity", 1);
-              tooltip.html("Job title: " + d.job.name)
-              .style("left", (event.pageX) + "px")
-              .style("top", (event.pageY - 28) + "px");
-            })
-          .on("mouseout", function(d) {
+    // On click functionality
+    node
+        .on("click", clicked)
+        .on("mouseover", mouseOver)
+        .on("mouseout", () => {
             tooltip.transition()
               .duration(500)
               .style("opacity", 0);
@@ -121,45 +94,76 @@ const NodeLink = (container, data) => {
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
 
-    // On click functionality
-    node
-        .on("click", function(event, d) {
-          const {x, y} = d;
-          event.stopPropagation();
-          svg.transition().duration(750).call(
-            zoomAttr.transform,
-            zoomIdentity
-              .translate(width / 2, height / 2)
-              .scale(Math.min(8, 0.9 / Math.max(x / width, y/ height)))
-              .translate(-x / 2, -y / 2),
-            pointer(event, svg.node())
-          );
-      });
-
-
     // forceSimulation will generate (x,y) pairs for nodes and links,
     // which can be dynamically updated, for interaction.
     var simulation = forceSimulation(nodes);              // Force algorithm is applied to data.nodes
         simulation.force("link", forceLink()                    // This force provides links between nodes
-                .id(d => { return d.name; })                    // This links the node.name 
+                .id(d => d.name)                    // This links the node.name 
                 .links(links)                             // to the source/target
         )
         .force("charge", forceManyBody().strength(-100))        // This adds repulsion between nodes.
         .force("center", forceCenter(width / 2, height / 2))    // This force attracts nodes to the center of the svg area
-        .on("end", ticked)                                     // The "end" tag specifies when the nodes (x,y) should change
+        // .on("end", ticked)                                     // The "end" tag specifies when the nodes (x,y) should change
+        .on("tick", ticked);
         
+    /** FUNCTIONS */    
     // This function is run at each iteration of the force algorithm, updating the nodes position.
     function ticked() {
         link
-            .attr("x1", function(d) { return d.source.x; })
-            .attr("y1", function(d) { return d.source.y; })
-            .attr("x2", function(d) { return d.target.x; })
-            .attr("y2", function(d) { return d.target.y; });
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
 
         node
-            .attr("cx", function (d) { return d.x; })
-            .attr("cy", function(d) { return d.y; });
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y);
     }
+
+    // Transformes the graph group on drag/dubble click
+    function zoomed({ transform }) {
+      graph.attr("transform", transform);
+    }
+    
+    // Zoom attribute, which sets the [min, max] zoom and calls zoomed
+    const zoomAttr = zoom()
+        .scaleExtent([0.5,8])
+        .on("zoom", zoomed);
+
+    // Resets viewbox to starting point
+    function reset() {
+      svg.transition().duration(750).call(
+          zoomAttr.transform,
+          zoomIdentity,
+          zoomTransform(svg.node()).invert([width / 2, height / 2])
+      );
+    }
+
+    // Mouse hover function
+    function mouseOver(event,d) {
+      tooltip.transition()
+        .duration(200)
+        .style("opacity", 1);
+        tooltip.html("Job title: " + d.job.name)
+        .style("left", (event.pageX) + "px")
+        .style("top", (event.pageY - 28) + "px");
+    }
+
+    // Click function
+    function clicked(event, d) {
+      const {x, y} = d;
+      event.stopPropagation();
+      svg.transition().duration(750).call(
+        zoomAttr.transform,
+        zoomIdentity
+          .translate(width / 2, height / 2)
+          .scale(2)
+          .translate(-x, -y),
+        pointer(event, svg.node())
+      );
+    };
+
+
     svg.call(zoomAttr);
 }
 

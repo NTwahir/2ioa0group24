@@ -79,10 +79,10 @@ const DataProcess = (data) => {
         });
     })
 
-    let processedData = {"nodes": nodes, "links": links, "jobs": jobs, "jobColor": jobColor};
+    let processedData = {"nodes": nodes, "links": links, "jobs": jobs};
 
     // Console debug
-    console.log({uniqueNodes, processedData, data, linkInfo, jobColor});
+    console.log({uniqueNodes, processedData, data, linkInfo});
 
     // TODO: get the count of msgs and append to links.thickness
 
