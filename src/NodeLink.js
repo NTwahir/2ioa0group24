@@ -1,5 +1,9 @@
 import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, zoom, zoomIdentity, zoomTransform, pointer } from 'd3';
 import DataProcess from './DataProcess';
+import CSS from './NodeLink.module.css';
+
+// Destructure css styles
+const { tooltip } = CSS;
 
 // Set the dimensions and margins of the graph
 const 
@@ -34,8 +38,8 @@ const NodeLink = (container, data) => {
     .on("click", reset);
 
     // Create and append tooltip to the div container
-    var tooltip = select(container).append("div")
-    .attr("class", "tooltip")
+    var tooltipDiv = select(container).append("div")
+    .attr("class", tooltip)
     .style("opacity", 0);
 
     // Initialize Legend
@@ -64,10 +68,10 @@ const NodeLink = (container, data) => {
         .attr("r", 10)
         .style("fill", n => n.job.color)
         .on("mouseover", mouseOver)
-          .on("mouseout", function(d) {
-            tooltip.transition()
-              .duration(500)
-              .style("opacity", 0)
+        .on("mouseout", function(d) {
+          tooltipDiv.transition()
+            .duration(500)
+            .style("opacity", 0)
     // On click functionality
     node
         .on("click", clicked)
@@ -142,20 +146,15 @@ const NodeLink = (container, data) => {
 
     // Mouse hover function
     function mouseOver (event,d) {
-        tooltip.transition()
+        tooltipDiv.transition()
           .duration(200)
           .style("opacity", 1)
-          tooltip.html("Name: " + d.name + "</br>" +
-                  "Job title: " + d.job.name + "</br>" + 
-                  "User ID: " + d.id + "</br>" + 
-                  "Email: " + d.email)
-          .style("position", "absolute")
-          .style("text-align", "center")
-          .style("padding", "5px")
-          .style("background", "white")
-          .style("border", "solid")
-          .style("border-width", "2px")
-          .style("border-radius", "5px")
+          tooltipDiv.html(
+              "Name: " + d.name + "</br>" +
+              "Job title: " + d.job.name + "</br>" + 
+              "User ID: " + d.id + "</br>" + 
+              "Email: " + d.email
+              )
           .style("left", (event.pageX + 28) + "px")
           .style("top", (event.pageY) + "px");
     }
