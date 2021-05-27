@@ -61,7 +61,7 @@ const NodeLink = (container, data) => {
             div.transition()
               .duration(200)
               .style("opacity", 1)
-              div.html("Job title: " + d.job.name)
+              div.html("Job title: " + d.job.name + "</br>" + "User ID: " + d.name + "</br>" + "Email: " + d.email)
               .style("position", "absolute")
               .style("text-align", "center")
               .style("padding", "5px")
