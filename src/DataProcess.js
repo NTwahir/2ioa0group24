@@ -54,8 +54,22 @@ const DataProcess = (data) => {
     uniqueNodes.forEach(n => {
         // Creating the nodes and links object
         let jobName = n.values[0].fromJobtitle;
+        let userEmail = n.values[0].fromEmail;
+        let userName = [];
+        let arr = userEmail.substring(0, userEmail.lastIndexOf("@"));
+        arr = arr.split(".").filter(el => el !== "");
+        userName.push(arr); 
+        userName.forEach(subArray => {
+        subArray.forEach((el, i) => {
+            subArray[i] = (el.charAt(0).toUpperCase() + el.substring(1));
+            })
+            userName = subArray.join(" ");
+        })
+        
         nodes.push({
             "name": n.key, 
+            "person": userName,
+            "email": userEmail,
             "job": {
                 "name": jobName, 
                 "color": jobColor[jobName]

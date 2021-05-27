@@ -45,6 +45,11 @@ const NodeLink = (container, data) => {
     .append("g")
     .attr("id", "graph");
 
+    // Create div for tooltip
+    var div = select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
     // Initialize the links
     var link = graph
         .selectAll("line")
@@ -63,14 +68,31 @@ const NodeLink = (container, data) => {
         .attr("cursor", "pointer")
         .attr("r", 10)
         .style("fill", n => n.job.color)
+        .on("mouseover", function(event,d) {
+            div.transition()
+              .duration(200)
+              .style("opacity", 1)
+              div.html("Name: " + d.person + "</br>" +
+                       "Job title: " + d.job.name + "</br>" + 
+                      "User ID: " + d.name + "</br>" + 
+                      "Email: " + d.email)
+              .style("position", "absolute")
+              .style("text-align", "center")
+              .style("padding", "5px")
+              .style("background", "white")
+              .style("border", "solid")
+              .style("border-width", "2px")
+              .style("border-radius", "5px")
+              .style("left", (event.pageX + 28) + "px")
+              .style("top", (event.pageY) + "px");
+            })
+          .on("mouseout", function(d) {
+            div.transition()
+              .duration(500)
+              .style("opacity", 0)
     // On click functionality
     node
         .on("click", clicked)
-        .on("mouseover", mouseOver)
-        .on("mouseout", () => {
-            tooltip.transition()
-              .duration(500)
-              .style("opacity", 0);
             });
 
     // Add one dot in the legend for each name.
