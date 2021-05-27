@@ -45,11 +45,6 @@ const NodeLink = (container, data) => {
     .append("g")
     .attr("id", "graph");
 
-    // Create div for tooltip
-    var div = select("body").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
-
     // Initialize the links
     var link = graph
         .selectAll("line")
@@ -68,26 +63,9 @@ const NodeLink = (container, data) => {
         .attr("cursor", "pointer")
         .attr("r", 10)
         .style("fill", n => n.job.color)
-        .on("mouseover", function(event,d) {
-            div.transition()
-              .duration(200)
-              .style("opacity", 1)
-              div.html("Name: " + d.person + "</br>" +
-                       "Job title: " + d.job.name + "</br>" + 
-                      "User ID: " + d.name + "</br>" + 
-                      "Email: " + d.email)
-              .style("position", "absolute")
-              .style("text-align", "center")
-              .style("padding", "5px")
-              .style("background", "white")
-              .style("border", "solid")
-              .style("border-width", "2px")
-              .style("border-radius", "5px")
-              .style("left", (event.pageX + 28) + "px")
-              .style("top", (event.pageY) + "px");
-            })
+        .on("mouseover", mouseOver)
           .on("mouseout", function(d) {
-            div.transition()
+            tooltip.transition()
               .duration(500)
               .style("opacity", 0)
     // On click functionality
@@ -121,7 +99,7 @@ const NodeLink = (container, data) => {
     // which can be dynamically updated, for interaction.
     var simulation = forceSimulation(nodes);              // Force algorithm is applied to data.nodes
         simulation.force("link", forceLink()                    // This force provides links between nodes
-                .id(d => d.name)                    // This links the node.name 
+                .id(d => d.id)                    // This links the node.name 
                 .links(links)                             // to the source/target
         )
         .force("charge", forceManyBody().strength(-100))        // This adds repulsion between nodes.
@@ -163,25 +141,28 @@ const NodeLink = (container, data) => {
     }
 
     // Mouse hover function
-    function mouseOver(event,d) {
-      tooltip.transition()
-      .duration(200)
-      .style("opacity", 1)
-      tooltip.html("Job title: " + d.job.name)
-      .style("position", "absolute")
-      .style("text-align", "center")
-      .style("padding", "5px")
-      .style("background", "white")
-      .style("border", "solid")
-      .style("border-width", "2px")
-      .style("border-radius", "5px")
-      .style("left", (event.pageX + 10) + "px")
-      .style("top", (event.pageY - 10) + "px");
+    function mouseOver (event,d) {
+        tooltip.transition()
+          .duration(200)
+          .style("opacity", 1)
+          tooltip.html("Name: " + d.name + "</br>" +
+                  "Job title: " + d.job.name + "</br>" + 
+                  "User ID: " + d.id + "</br>" + 
+                  "Email: " + d.email)
+          .style("position", "absolute")
+          .style("text-align", "center")
+          .style("padding", "5px")
+          .style("background", "white")
+          .style("border", "solid")
+          .style("border-width", "2px")
+          .style("border-radius", "5px")
+          .style("left", (event.pageX + 28) + "px")
+          .style("top", (event.pageY) + "px");
     }
 
     // Click function
     function clicked(event, d) {
-      console.log(d)
+      console.log(d) //get data from click in console
       const {x, y} = d;
       event.stopPropagation();
       svg.transition().duration(750).call(

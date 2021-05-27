@@ -1,5 +1,5 @@
 import { nest } from 'd3-collection';
-import { ascending, sum } from 'd3';
+import { ascending } from 'd3';
 import _ from 'lodash';
 
 const DataProcess = (data) => {
@@ -16,8 +16,8 @@ const DataProcess = (data) => {
         // TODO
 
     // average sentiment per email sent
-    let groupById = data.filter(v => v.fromId === String(96) && v.messageType === "TO");
-    let averageSentiment = sum(groupById, v => v.sentiment) / groupById.length;
+    // let groupById = data.filter(v => v.fromId === String(96) && v.messageType === "TO");
+    // let averageSentiment = sum(groupById, v => v.sentiment) / groupById.length;
 
     // 10 most negative sent messages
         // TODO
@@ -29,11 +29,9 @@ const DataProcess = (data) => {
     let nodes = [];
     let links = [];
     let linkInfo = [];
-    let userName = [];
 
 
-    // smt
-    let uniq2 = _.uniqBy(uniqueNodes, e => e.values[0].fromJobtitle);
+    // Assigning colors to job titles
     let jobs = [];
     let colors = [
         "#003f5c",
@@ -48,27 +46,32 @@ const DataProcess = (data) => {
         "#de425b",
         "#69b3a2"
     ];
-    uniq2.forEach(v => jobs.push(v.values[0].fromJobtitle));
+    let uniqJob = _.uniqBy(uniqueNodes, e => e.values[0].fromJobtitle);
+    uniqJob.forEach(v => jobs.push(v.values[0].fromJobtitle));
     let jobColor = _.zipObject(jobs, colors);
 
     uniqueNodes.forEach(n => {
         // Creating the nodes and links object
         let jobName = n.values[0].fromJobtitle;
-        let userEmail = n.values[0].fromEmail;
         let userName = [];
+
+        // Creating Array of usernames
+        let userEmail = n.values[0].fromEmail;
         let arr = userEmail.substring(0, userEmail.lastIndexOf("@"));
         arr = arr.split(".").filter(el => el !== "");
-        userName.push(arr); 
+        userName.push(arr);
+
+        // Adding capital letters to each first and surname.
         userName.forEach(subArray => {
-        subArray.forEach((el, i) => {
-            subArray[i] = (el.charAt(0).toUpperCase() + el.substring(1));
+            subArray.forEach((el, i) => {
+                subArray[i] = (el.charAt(0).toUpperCase() + el.substring(1));
             })
             userName = subArray.join(" ");
         })
         
         nodes.push({
-            "name": n.key, 
-            "person": userName,
+            "id": n.key, 
+            "name": userName,
             "email": userEmail,
             "job": {
                 "name": jobName, 
@@ -92,29 +95,14 @@ const DataProcess = (data) => {
                 });
             }
         });
-
-        // Creating Array of usernames
-        let userEmail = n.values[0].fromEmail;
-        let arr = userEmail.substring(0, userEmail.lastIndexOf("@"));
-        arr = arr.split(".").filter(el => el !== "");
-        userName.push(arr);
-    })
-
-    // Adding capital letters to each first and surname.
-    userName.forEach(subArray => {
-        subArray.forEach((el, i) => {
-            subArray[i] = (el.charAt(0).toUpperCase() + el.substring(1));
-        })
     })
 
 
     let processedData = {"nodes": nodes, "links": links, "jobs": jobs};
-
-
     // TODO: get the count of msgs and append to links.thickness
 
     // Console debug
-    console.log({uniqueNodes, processedData, data, linkInfo, userName});
+    console.log({uniqueNodes, processedData, data, linkInfo});
 
 
     return processedData;
