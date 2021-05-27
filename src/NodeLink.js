@@ -45,6 +45,11 @@ const NodeLink = (container, data) => {
     .append("g")
     .attr("id", "graph");
 
+    // Create div for tooltip
+    var div = select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
     // Initialize the links
     var link = graph
         .selectAll("line")
@@ -74,11 +79,13 @@ const NodeLink = (container, data) => {
               .style("border", "solid")
               .style("border-width", "2px")
               .style("border-radius", "5px")
-              .style("left", (event.pageX) + "px")
-              .style("top", (event.pageY - 28) + "px");
+              .style("left", (event.pageX + 28) + "px")
+              .style("top", (event.pageY) + "px");
             })
           .on("mouseout", function(d) {
             div.transition()
+              .duration(500)
+              .style("opacity", 0)
     // On click functionality
     node
         .on("click", clicked)
