@@ -8,10 +8,19 @@ const DataProcess = (data) => {
     data = data.filter(v => 
         v.toId !== '136' &&
         v.toId !== '78')
+
+    // Group by message sent per user
+    let uniqueNodes = nest().key(d => d.fromId).sortKeys(ascending).entries(data);
     
     // links: (source, target, thickness)
     // Thickness = count # toId's per fromId
-
+    let id = [];
+    let sent = [];
+    uniqueNodes.forEach(n => {
+        id.push(n.key);
+        sent.push(n.values.length);
+    })
+    let stats = _.zipObject(id, sent);
     // something with sentiment
         // TODO
 
@@ -21,9 +30,6 @@ const DataProcess = (data) => {
 
     // 10 most negative sent messages
         // TODO
-
-    // Group by message sent per user
-    let uniqueNodes = nest().key(d => d.fromId).sortKeys(ascending).entries(data);
 
     // Processs the dataset into nodes and links
     let nodes = [];
@@ -86,23 +92,24 @@ const DataProcess = (data) => {
         });
 
         n.values.forEach(v => {
-
-            let hasVal = _.some(links, ['target', v.toId])          // Prevent duplicate links between nodes
-            if(!hasVal) {
-                links.push({
-                    "source": v.fromId, 
-                    "target": v.toId
-                });
-            }
+            links.push({
+                "source": v.fromId, 
+                "target": v.toId
+            });
         });
     })
 
+    // filter out duplicate {toID, fromID} object pairs
+    links = links.filter((v,i,a) => 
+        i === a.findIndex(t => (t.source === v.source && t.target===v.target))
+    );
 
-    let processedData = {"nodes": nodes, "links": links, "jobs": jobs};
+
+    let processedData = {"nodes": nodes, "links": links, "jobs": jobs, "stats": stats};
     // TODO: get the count of msgs and append to links.thickness
 
     // Console debug
-    console.log({uniqueNodes, processedData, data, linkInfo});
+    console.log({uniqueNodes, processedData, data, linkInfo, jobColor});
 
 
     return processedData;

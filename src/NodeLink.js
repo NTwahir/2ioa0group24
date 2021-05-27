@@ -16,7 +16,7 @@ const NodeLink = (container, data) => {
     data = DataProcess(data);
 
     // Destructure data to prevent redundancy
-    const { nodes, links, jobs } = data;
+    const { nodes, links, jobs, stats } = data;
     let colors = [
         "#003f5c",
         "#2f4b7c",
@@ -56,7 +56,7 @@ const NodeLink = (container, data) => {
         .enter()
         .append("line")
         .style("stroke", "#aaa")
-        .style("stroke-width", 2)
+        .style("stroke-width", 1)
 
     // Initialize the nodes
     var node = graph
@@ -106,7 +106,7 @@ const NodeLink = (container, data) => {
                 .id(d => d.id)                    // This links the node.name 
                 .links(links)                             // to the source/target
         )
-        .force("charge", forceManyBody().strength(-100))        // This adds repulsion between nodes.
+        .force("charge", forceManyBody().strength(-1000))        // This adds repulsion between nodes.
         .force("center", forceCenter(width / 2, height / 2))    // This force attracts nodes to the center of the svg area
         // .on("end", ticked)                                     // The "end" tag specifies when the nodes (x,y) should change
         .on("tick", ticked);
@@ -132,7 +132,7 @@ const NodeLink = (container, data) => {
     
     // Zoom attribute, which sets the [min, max] zoom and calls zoomed
     const zoomAttr = zoom()
-        .scaleExtent([0.5,8])
+        .scaleExtent([0.1,8])
         .on("zoom", zoomed);
 
     // Resets viewbox to starting point
@@ -153,6 +153,7 @@ const NodeLink = (container, data) => {
               "Name: " + d.name + "</br>" +
               "Job title: " + d.job.name + "</br>" + 
               "User ID: " + d.id + "</br>" + 
+              "Number of Emails sent: " + stats[d.id] + "</br>" +
               "Email: " + d.email
               )
           .style("left", (event.pageX + 28) + "px")
