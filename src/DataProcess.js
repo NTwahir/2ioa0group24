@@ -54,18 +54,20 @@ const DataProcess = (data) => {
 
         let jobName = n.values[0].fromJobtitle;
         let userEmail = n.values[0].fromEmail;
-        // let count = 0;
-        // let i = 0;
-        // for (count = 0; i < userEmail.length; i++) {
-        //     userEmail[count] = userEmail[count].substring(0, userEmail.lastIndexOf("@"));
-        //     const userName = userEmail[count].split(".");
-        //         for (i; i < userName.length; i++) {
-        //             userName[i] = userName[i][0].toUpperCase() + userName[i].substr(1);
-        //         }
-        //     userName.join(" ");
-        //   } 
+        let userName = [];
+        let arr = userEmail.substring(0, userEmail.lastIndexOf("@"));
+        arr = arr.split(".").filter(el => el !== "");
+        userName.push(arr); 
+        userName.forEach(subArray => {
+        subArray.forEach((el, i) => {
+            subArray[i] = (el.charAt(0).toUpperCase() + el.substring(1));
+            })
+            userName = subArray.join(" ");
+        })
+        
         nodes.push({
             "name": n.key, 
+            "person": userName,
             "email": userEmail,
             "job": {
                 "name": jobName, 
