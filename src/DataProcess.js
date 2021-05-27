@@ -29,6 +29,7 @@ const DataProcess = (data) => {
     let nodes = [];
     let links = [];
     let linkInfo = [];
+    let userName = [];
 
 
     // smt
@@ -51,7 +52,7 @@ const DataProcess = (data) => {
     let jobColor = _.zipObject(jobs, colors);
 
     uniqueNodes.forEach(n => {
-
+        // Creating the nodes and links object
         let jobName = n.values[0].fromJobtitle;
         nodes.push({
             "name": n.key, 
@@ -77,14 +78,29 @@ const DataProcess = (data) => {
                 });
             }
         });
+
+        // Creating Array of usernames
+        let userEmail = n.values[0].fromEmail;
+        let arr = userEmail.substring(0, userEmail.lastIndexOf("@"));
+        arr = arr.split(".").filter(el => el !== "");
+        userName.push(arr);
     })
+
+    // Adding capital letters to each first and surname.
+    userName.forEach(subArray => {
+        subArray.forEach((el, i) => {
+            subArray[i] = (el.charAt(0).toUpperCase() + el.substring(1));
+        })
+    })
+
 
     let processedData = {"nodes": nodes, "links": links, "jobs": jobs};
 
-    // Console debug
-    console.log({uniqueNodes, processedData, data, linkInfo});
 
     // TODO: get the count of msgs and append to links.thickness
+
+    // Console debug
+    console.log({uniqueNodes, processedData, data, linkInfo, userName});
 
 
     return processedData;

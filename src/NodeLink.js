@@ -60,6 +60,7 @@ const NodeLink = (container, data) => {
         .data(nodes)
         .enter()
         .append("circle")
+        .attr("cursor", "pointer")
         .attr("r", 10)
         .style("fill", n => n.job.color)
     // On click functionality
@@ -152,12 +153,13 @@ const NodeLink = (container, data) => {
       .style("border", "solid")
       .style("border-width", "2px")
       .style("border-radius", "5px")
-      .style("left", (event.pageX) + "px")
-      .style("top", (event.pageY - 28) + "px");
+      .style("left", (event.pageX + 10) + "px")
+      .style("top", (event.pageY - 10) + "px");
     }
 
     // Click function
     function clicked(event, d) {
+      console.log(d)
       const {x, y} = d;
       event.stopPropagation();
       svg.transition().duration(750).call(
