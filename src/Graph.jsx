@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NodeLink from './NodeLink';
 
 export function Graph({ data }) {
   const containerRef = React.useRef(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let destroyFn;
 
     if (containerRef.current) {
@@ -13,6 +13,7 @@ export function Graph({ data }) {
     }
 
     return destroyFn;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <div ref={containerRef} />;
