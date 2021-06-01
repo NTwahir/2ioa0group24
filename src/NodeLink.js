@@ -8,7 +8,7 @@ const { tooltip } = CSS;
 // Set the dimensions and margins of the graph
 const 
 margin = {top: 10, right: 30, bottom: 30, left: 40},
-width = 1920 - margin.left - margin.right,
+width = 2920 - margin.left - margin.right,
 height = 1080 - margin.top - margin.bottom;
 
 const NodeLink = (container, data) => {
@@ -34,7 +34,7 @@ const NodeLink = (container, data) => {
     // Append the svg object to the div container
     var svg = select(container)
     .append("svg")
-    .attr("viewBox", [0, 0, 2920, 2080])
+    .attr("viewBox", [0, 0, 2920, 1100])
     .on("click", reset);
 
     // Create and append tooltip to the div container
@@ -82,18 +82,18 @@ const NodeLink = (container, data) => {
     .data(jobs)
     .enter()
     .append("circle")
-    .attr("cx", width)
-    .attr("cy", (d,i) => 100 + i*25) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("cx", width-200)
+    .attr("cy", (d,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
     .style("fill", d => color(d))
 
-    // Add one dot in the legend for each name.
+    // Add the name of the job title for each previously placed dot.
     legend.selectAll("mylabels")
     .data(jobs)
     .enter()
     .append("text")
-    .attr("x", (width+20))
-    .attr("y", (d,i) => 100 + i*25) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("x", (width-180))
+    .attr("y", (d,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
     .style("fill", d => color(d))
     .text(d => d)
     .attr("text-anchor", "left")
