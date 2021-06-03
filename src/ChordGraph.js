@@ -1,19 +1,39 @@
 import { select, scalePoint, zoom, zoomIdentity, zoomTransform } from 'd3';
 import DataProcess from './DataProcess';
 
-const ChordGraph = (container, data) => {
-    // Processs the dataset into nodes and links
-    data = DataProcess(data);
+// Destructure css styles
+const { tooltip } = CSS;
 
-// set the dimensions and margins of the graph
-var margin = {top: 20, right: 30, bottom: 20, left: 30},
-  width = 450 - margin.left - margin.right,
-  height = 300 - margin.top - margin.bottom,
-  start = 0,
-  end = 0;
+// Set the dimensions and margins of the graph
+const 
+margin = {top: 10, right: 30, bottom: 30, left: 40},
+width = 2920 - margin.left - margin.right,
+height = 1120 - margin.top - margin.bottom,
+start = 0,
+end = 0;
+
+const ChordGraph = (container, data) => {
+    console.log(data)
+    // Processs the dataset into nodes and links
+    // data = DataProcess(data);
+
+    const { nodes, links, jobs, stats } = data;
+    let colors = [
+      "#003f5c",
+      "#2f4b7c",
+      "#665191",
+      "#a05195",
+      "#d45087",
+      "#f95d6a",
+      "#ff7c43",
+      "#ffa600",
+      "#488f31",
+      "#de425b",
+      "#69b3a2"
+  ];
 
 // append the svg object to the body of the page
-var svg = select(container)
+var svg2 = select(container)
   .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -21,17 +41,14 @@ var svg = select(container)
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-  // List of node names
-  var allNodes = data.nodes.map(function(d){return d.name})
-
   // A linear scale to position the nodes on the X axis
   var x = scalePoint()
     .range([0, width])
-    .domain(allNodes)
+    .domain(nodes)
 
   // Add the circle for the nodes
-  svg
-    .selectAll("nodes")
+  svg2
+    .selectAll("Nodes")
     .data("nodes")
     .enter()
     .append("circle")
@@ -44,14 +61,14 @@ var svg = select(container)
   // In my input data, links are provided between nodes -id-, NOT between node names.
   // So I have to do a link between this id and the name
   var idToNode = {};
-  data.nodes.forEach(function (n) {
+  nodes.forEach(function (n) {
     idToNode[n.key] = n;
   });
   // Cool, now if I do idToNode["2"].name I've got the name of the node with id 2
 
   // Add the links
-  svg
-    .selectAll("links")
+  svg2
+    .selectAll("Links")
     .data("links")
     .enter()
     .append('path')
