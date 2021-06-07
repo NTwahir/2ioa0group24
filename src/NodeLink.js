@@ -69,13 +69,13 @@ const NodeLink = (container, data) => {
         .style("fill", n => n.job.color)
         .on("mouseover", mouseOver)
         .on("mouseout", function(d) {
-          tooltipDiv.transition()
-            .duration(500)
-            .style("opacity", 0)
+            tooltipDiv.transition()
+              .duration(500)
+              .style("opacity", 0)
+          });
     // On click functionality
     node
-        .on("click", clicked)
-            });
+        .on("click", clicked);
 
     // Add one dot in the legend for each name.
     legend.selectAll("mydots")
@@ -105,9 +105,10 @@ const NodeLink = (container, data) => {
         simulation.force("link", forceLink()                    // This force provides links between nodes
                 .id(d => d.id)                    // This links the node.name 
                 .links(links)                             // to the source/target
+                .distance(0).strength(0.05)
         )
-        .force("charge", forceManyBody().strength(-1000))        // This adds repulsion between nodes.
-        .force("center", forceCenter(width / 2, height / 2))    // This force attracts nodes to the center of the svg area
+        .force("charge", forceManyBody().strength(-4000))        // This adds repulsion between nodes.
+        .force("center", forceCenter(2920 / 2, 2080 / 2))    // This force attracts nodes to the center of the svg area
         // .on("end", ticked)                                     // The "end" tag specifies when the nodes (x,y) should change
         .on("tick", ticked);
         
@@ -118,7 +119,9 @@ const NodeLink = (container, data) => {
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
             .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y);
+            .attr("y2", d => d.target.y)
+            .attr("source", d => d.source.id)
+            .attr("target", d => d.target.id);
 
         node
             .attr("cx", d => d.x)
@@ -132,16 +135,19 @@ const NodeLink = (container, data) => {
     
     // Zoom attribute, which sets the [min, max] zoom and calls zoomed
     const zoomAttr = zoom()
-        .scaleExtent([0.1,8])
+        .scaleExtent([0.1,80])
         .on("zoom", zoomed);
 
     // Resets viewbox to starting point
     function reset() {
-      svg.transition().duration(750).call(
-          zoomAttr.transform,
-          zoomIdentity,
-          zoomTransform(svg.node()).invert([width / 2, height / 2])
-      );
+        // Return svg to starting position
+        svg.transition().duration(750).call(
+            zoomAttr.transform,
+            zoomIdentity,
+            zoomTransform(svg.node()).invert([width / 2, height / 2])
+        );
+        // Set link color to default
+        link.style("stroke", "#aaa");
     }
 
     // Mouse hover function
@@ -162,17 +168,31 @@ const NodeLink = (container, data) => {
 
     // Click function
     function clicked(event, d) {
-      console.log(d) //get data from click in console
-      const {x, y} = d;
-      event.stopPropagation();
-      svg.transition().duration(750).call(
-        zoomAttr.transform,
-        zoomIdentity
-          .translate(width / 2, height / 2)
-          .scale(2)
-          .translate(-x, -y),
-        pointer(event, svg.node())
-      );
+        highlight(d);
+        const {x, y} = d;
+        event.stopPropagation();
+        svg.transition().duration(750).call(
+          zoomAttr.transform,
+          zoomIdentity
+            .translate(width / 2, height / 2)
+            .scale(2)
+            .translate(-x, -y),
+          pointer(event, svg.node())
+        );
+    };
+
+    /** Highlights links of selected node, 
+     * either red or green based of if the email was sent 
+     * or received respectively. 
+     */
+    function highlight(d) {
+        link.style("stroke", datum => {
+            let sourceId = datum.source.id;
+            let targetId = datum.target.id;
+            return sourceId === d.id ? "red"
+                : targetId === d.id ? "green"
+                : "";
+        });
     };
 
 
