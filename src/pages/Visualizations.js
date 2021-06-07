@@ -5,7 +5,7 @@ const Visualizations = ({ data }) => {
     return (
         <div>
             <h1>Node-edge graph of email network</h1>
-            <Graph data={data} />
+            <Graph data={data} type={1} />
         </div>
     )
 }
