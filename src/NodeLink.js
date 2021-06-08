@@ -34,7 +34,7 @@ const NodeLink = (container, data) => {
     // Append the svg object to the div container
     var svg = select(container)
     .append("svg")
-    .attr("viewBox", [0, 0, 2920, 1120])
+    .attr("viewBox", [0, 0, width, height])
     .on("click", reset);
 
     // Create and append tooltip to the div container
@@ -83,9 +83,9 @@ const NodeLink = (container, data) => {
     .enter()
     .append("circle")
     .attr("cx", width-200)
-    .attr("cy", (d,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("cy", (job,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
-    .style("fill", d => color(d))
+    .style("fill", job => color(job))
 
     // Add the name of the job title for each previously placed dot.
     legend.selectAll("mylabels")
@@ -93,9 +93,9 @@ const NodeLink = (container, data) => {
     .enter()
     .append("text")
     .attr("x", (width-180))
-    .attr("y", (d,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
-    .style("fill", d => color(d))
-    .text(d => d)
+    .attr("y", (job,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
+    .style("fill", job => color(job))
+    .text(job => job)
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
 
