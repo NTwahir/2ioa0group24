@@ -4,6 +4,7 @@ import CSS from './NodeLink.module.css';
 
 // Destructure css styles
 const { tooltip } = CSS;
+const { legend } = CSS;
 
 // Set the dimensions and margins of the graph
 const 
@@ -44,7 +45,9 @@ const NodeLink = (container, data) => {
 
     // Initialize Legend
     var color = scaleOrdinal().domain(jobs).range(colors);
-    var legend = svg.append("g").attr("id", "legend");
+    var legendDiv = select(container).append("div").attr("class", legend);
+
+
     var graph = svg
     .append("g")
     .attr("id", "graph");
@@ -112,7 +115,7 @@ const NodeLink = (container, data) => {
         // .on("end", ticked)                                     // The "end" tag specifies when the nodes (x,y) should change
         .on("tick", ticked);
         
-    /** FUNCTIONS */    
+    /** FUNCTIONS **/    
     // This function is run at each iteration of the force algorithm, updating the nodes position.
     function ticked() {
         link
@@ -195,6 +198,20 @@ const NodeLink = (container, data) => {
         });
     };
 
+    // Add the name of the job title for each previously placed dot.
+    legendDiv.selectAll()
+    .data(jobs)
+    .enter()
+    .append("text")
+
+    .html(d => "● " + d + "</br>")
+    //.html(d => color("● ") + d + "</br>")
+    //.style('fill', 'red')
+    ////.style("fill", d => color(d))
+    //.style("fill", d => d.job.color)
+
+    .attr("text-anchor", "middle")
+    .style("alignment-baseline", "middle")
 
     svg.call(zoomAttr);
 }
