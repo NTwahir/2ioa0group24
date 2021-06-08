@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import NodeLink from './NodeLink';
+import ChordGraph from './ChordGraph';
 
-export function Graph({ data }) {
+export function Graph({ data, type }) {
   const containerRef = React.useRef(null);
 
   useEffect(() => {
     let destroyFn;
-
-    if (containerRef.current) {
-      const destroy = NodeLink(containerRef.current, data);
-      destroyFn = destroy;
-    }
+    // renders either the viz 1 or viz 2, based on the type parm.
+    destroyFn =
+    containerRef.current && type === 1 ? NodeLink(containerRef.current, data) :
+    containerRef.current && type === 2 ? ChordGraph(containerRef.current, data) :
+    null;
 
     return destroyFn;
     // eslint-disable-next-line react-hooks/exhaustive-deps

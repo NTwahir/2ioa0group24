@@ -23,6 +23,7 @@ const DataProcess = (data) => {
     let stats = _.zipObject(id, sent);
     // something with sentiment
         // TODO
+        // average sentiment of emails sent per node
 
     // average sentiment per email sent
     // let groupById = data.filter(v => v.fromId === String(96) && v.messageType === "TO");
