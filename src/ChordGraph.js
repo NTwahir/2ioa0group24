@@ -1,5 +1,6 @@
 import { select, scalePoint, zoom, scaleOrdinal, zoomIdentity, zoomTransform, pointer } from 'd3';
 import DataProcess from './DataProcess';
+import CSS from './ChordGraph.module.css';
 
 // Destructure css styles
 const { tooltip } = CSS;
@@ -33,15 +34,16 @@ const ChordGraph = (container, data) => {
         "#69b3a2"
     ];
 
-// append the svg object to the body of the page
-var svg = select(container)
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")")
-    .on("click", reset);
+    // append the svg object to the body of the page
+    var svg = select(container)
+        .append("svg")
+        .attr("viewBox", [0, 0, 2920, 1120])
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")")
+        .on("click", reset);
 
     // Create and append tooltip to the div container
     var tooltipDiv = select(container).append("div")
@@ -63,13 +65,14 @@ var svg = select(container)
         .domain(allNodes)
 
     // Add the circle for the nodes
-    var node = svg
+    var node = graph
     .append("g")
     .attr("class", "nodes")
     .selectAll("nodes")
     .data(nodes)
     .enter()
     .append("circle")
+        .attr("cursor", "pointer")
         .attr("cx", d => x(d.name))
         .attr("cy", height-30)
         .attr("r", 8)
@@ -118,7 +121,7 @@ var svg = select(container)
     // Cool, now if I do idToNode["2"].name I've got the name of the node with id 2
 
     // Add the links
-    var link = svg
+    var link = graph
     .append("g")
     .attr("class", "links")
     .selectAll("links")
@@ -138,9 +141,8 @@ var svg = select(container)
     .style("fill", "none")
     .attr("stroke", "#aaa");
 
-        /** FUNCTIONS */    
-
-    // Transformes the graph group on drag/double click
+    /** FUNCTIONS */   
+    // Transforms the graph group on drag/double click
     function zoomed({ transform }) {
       graph.attr("transform", transform);
     }
@@ -153,10 +155,10 @@ var svg = select(container)
     // Resets viewbox to starting point
     function reset() {
         // Return svg to starting position
-        svg.transition().duration(750).call(
+        graph.transition().duration(750).call(
             zoomAttr.transform,
             zoomIdentity,
-            zoomTransform(svg.node()).invert([width / 2, height / 2])
+            zoomTransform(graph.node()).invert([width / 2, height / 2])
         );
         // Set link color to default
         link.style("stroke", "#aaa");

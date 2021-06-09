@@ -111,7 +111,7 @@ const NodeLink = (container, data) => {
             .attr("cy", d => d.y);
     }
 
-    // Transformes the graph group on drag/double click
+    // Transforms the graph group on drag/double click
     function zoomed({ transform }) {
       graph.attr("transform", transform);
     }
