@@ -45,7 +45,9 @@ const NodeLink = (container, data) => {
 
     // Initialize Legend
     var color = scaleOrdinal().domain(jobs).range(colors);
-    var legendDiv = select(container).append("div").attr("class", legend);
+    var legendDiv = select(container)
+    .append("svg")
+    .attr("class", legend);
 
 
     var graph = svg
@@ -79,28 +81,6 @@ const NodeLink = (container, data) => {
     // On click functionality
     node
         .on("click", clicked);
-
-    // Add one dot in the legend for each name.
-    legend.selectAll("mydots")
-    .data(jobs)
-    .enter()
-    .append("circle")
-    .attr("cx", width-200)
-    .attr("cy", (job,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
-    .attr("r", 7)
-    .style("fill", job => color(job))
-
-    // Add the name of the job title for each previously placed dot.
-    legend.selectAll("mylabels")
-    .data(jobs)
-    .enter()
-    .append("text")
-    .attr("x", (width-180))
-    .attr("y", (job,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
-    .style("fill", job => color(job))
-    .text(job => job)
-    .attr("text-anchor", "left")
-    .style("alignment-baseline", "middle")
 
     // forceSimulation will generate (x,y) pairs for nodes and links,
     // which can be dynamically updated, for interaction.
@@ -198,19 +178,26 @@ const NodeLink = (container, data) => {
         });
     };
 
+    // Add one dot in the legend for each name.
+    legendDiv.selectAll("mydots")
+    .data(jobs)
+    .enter()
+    .append("circle")
+    .attr("cx", 7)
+    .attr("cy", (d,i) => 4 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("r", 7)
+    .style("fill", d => color(d))
+
     // Add the name of the job title for each previously placed dot.
-    legendDiv.selectAll()
+    legendDiv.selectAll("mylabels")
     .data(jobs)
     .enter()
     .append("text")
-
-    .html(d => "● " + d + "</br>")
-    //.html(d => color("● ") + d + "</br>")
-    //.style('fill', 'red')
-    ////.style("fill", d => color(d))
-    //.style("fill", d => d.job.color)
-
-    .attr("text-anchor", "middle")
+    .attr("x", 27)
+    .attr("y", (job,i) => 4 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
+    .style("fill", d => color(d))
+    .text(d => d)
+    .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
 
     svg.call(zoomAttr);
