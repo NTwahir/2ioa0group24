@@ -1,4 +1,4 @@
-import { select, scalePoint, zoom, scaleOrdinal, zoomIdentity, zoomTransform, pointer } from 'd3';
+import { select, zoom, zoomIdentity, zoomTransform, pointer, scaleBand } from 'd3';
 import DataProcess from './DataProcess';
 import CSS from './ChordGraph.module.css';
 
@@ -51,7 +51,7 @@ const ChordGraph = (container, data) => {
     .style("opacity", 0);
 
     // Initialize Legend
-    var color = scaleOrdinal().domain(jobs).range(colors);
+    var color = scaleBand().domain(jobs).range(colors);
     var legend = svg.append("g").attr("id", "legend");
     var graph = svg
     .append("g")
@@ -60,7 +60,7 @@ const ChordGraph = (container, data) => {
     // List of node names
     let allNodes = nodes.map(d => d.name)
     // A linear scale to position the nodes on the X axis
-    let x = scalePoint()
+    let x = scaleBand()
         .range([0, width])
         .domain(allNodes)
 
@@ -72,7 +72,6 @@ const ChordGraph = (container, data) => {
     .data(nodes)
     .enter()
     .append("circle")
-        .attr("cursor", "pointer")
         .attr("cx", d => x(d.name))
         .attr("cy", height-30)
         .attr("r", 8)
@@ -144,8 +143,8 @@ const ChordGraph = (container, data) => {
     /** FUNCTIONS */   
     // Transforms the graph group on drag/double click
     function zoomed({ transform }) {
-      graph.attr("transform", transform);
-    }
+        graph.attr("transform", transform);
+      }
     
     // Zoom attribute, which sets the [min, max] zoom and calls zoomed
     const zoomAttr = zoom()
@@ -185,13 +184,18 @@ const ChordGraph = (container, data) => {
 
     // Click function
     function clicked(event, d) {
-        highlight(d);
-        const {x, y} = d;
+        let x = -pointer(event)[0];
+        let y = -pointer(event)[1];
+        x = (x * 2) + (width / 2);
+        y = (y * 2) + (height / 2);
+        console.log(x);
+        console.log(y);
+
         event.stopPropagation();
-        svg.transition().duration(750).call(
+        graph.transition().duration(750).call(
           zoomAttr.transform,
           zoomIdentity
-            .translate(width / 2, height / 2)
+            .translate(width / 2 , height )
             .scale(2)
             .translate(-x, -y),
           pointer(event, svg.node())
