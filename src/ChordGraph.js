@@ -64,6 +64,34 @@ const ChordGraph = (container, data) => {
         .range([0, width])
         .domain(allNodes)
 
+    // Add links between nodes. Here is the tricky part.
+    // In my input data, links are provided between nodes -id-, NOT between node names.
+    // So I have to do a link between this id and the name
+    let idToNode = {};
+    nodes.forEach(n => idToNode[n.id] = n);
+    // Cool, now if I do idToNode["2"].name I've got the name of the node with id 2
+
+    // Add the links
+    var link = graph
+    .append("g")
+    .attr("class", "links")
+    .selectAll("links")
+    .data(links)
+    .enter()
+    .append('path')
+    .attr('d', d => {
+        start = x(idToNode[d.source].name)    // X position of start node on the X axis
+        end = x(idToNode[d.target].name)      // X position of end node
+        return ['M', start, height-30,    // the arc starts at the coordinate x=start, y=height-30 (where the starting node is)
+        'A',                            // This means we're gonna build an elliptical arc
+        (start - end)/2, ',',    // Next 2 lines are the coordinates of the inflexion point. Height of this point is proportional with start - end distance
+        (start - end)/2, 0, 0, ',',
+        start < end ? 1 : 0, end, ',', height-30] // We always want the arc on top. So if end is before start, putting 0 here turn the arc upside down.
+        .join(' ');
+    })
+    .style("fill", "none")
+    .attr("stroke", "#aaa");
+
     // Add the circle for the nodes
     var node = graph
     .append("g")
@@ -113,33 +141,6 @@ const ChordGraph = (container, data) => {
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
 
-    // Add links between nodes. Here is the tricky part.
-    // In my input data, links are provided between nodes -id-, NOT between node names.
-    // So I have to do a link between this id and the name
-    let idToNode = {};
-    nodes.forEach(n => idToNode[n.id] = n);
-    // Cool, now if I do idToNode["2"].name I've got the name of the node with id 2
-
-    // Add the links
-    var link = graph
-    .append("g")
-    .attr("class", "links")
-    .selectAll("links")
-    .data(links)
-    .enter()
-    .append('path')
-    .attr('d', d => {
-        start = x(idToNode[d.source].name)    // X position of start node on the X axis
-        end = x(idToNode[d.target].name)      // X position of end node
-        return ['M', start, height-30,    // the arc starts at the coordinate x=start, y=height-30 (where the starting node is)
-        'A',                            // This means we're gonna build an elliptical arc
-        (start - end)/2, ',',    // Next 2 lines are the coordinates of the inflexion point. Height of this point is proportional with start - end distance
-        (start - end)/2, 0, 0, ',',
-        start < end ? 1 : 0, end, ',', height-30] // We always want the arc on top. So if end is before start, putting 0 here turn the arc upside down.
-        .join(' ');
-    })
-    .style("fill", "none")
-    .attr("stroke", "#aaa");
 
     /** FUNCTIONS */   
     // Transforms the graph group on drag/double click
@@ -185,8 +186,9 @@ const ChordGraph = (container, data) => {
 
     // Click function
     function clicked(event, d) {
+        console.log(d);
         highlight(d);
-        const {x, y} = d;
+        const x = 500, y = 500; 
         event.stopPropagation();
         svg.transition().duration(750).call(
           zoomAttr.transform,
