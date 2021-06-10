@@ -4,7 +4,6 @@ import CSS from './NodeLink.module.css';
 
 // Destructure css styles
 const { tooltip } = CSS;
-const { legend } = CSS;
 
 // Set the dimensions and margins of the graph
 const 
@@ -35,7 +34,7 @@ const NodeLink = (container, data) => {
     // Append the svg object to the div container
     var svg = select(container)
     .append("svg")
-    .attr("viewBox", [0, 0, width, height])
+    .attr("viewBox", [0, 0, 2920, 1120])
     .on("click", reset);
 
     // Create and append tooltip to the div container
@@ -45,11 +44,7 @@ const NodeLink = (container, data) => {
 
     // Initialize Legend
     var color = scaleOrdinal().domain(jobs).range(colors);
-    var legendDiv = select(container)
-    .append("svg")
-    .attr("class", legend);
-
-
+    var legend = svg.append("g").attr("id", "legend");
     var graph = svg
     .append("g")
     .attr("id", "graph");
@@ -82,6 +77,28 @@ const NodeLink = (container, data) => {
     node
         .on("click", clicked);
 
+    // Add one dot in the legend for each name.
+    legend.selectAll("mydots")
+    .data(jobs)
+    .enter()
+    .append("circle")
+    .attr("cx", width-200)
+    .attr("cy", (d,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("r", 7)
+    .style("fill", d => color(d))
+
+    // Add the name of the job title for each previously placed dot.
+    legend.selectAll("mylabels")
+    .data(jobs)
+    .enter()
+    .append("text")
+    .attr("x", (width-180))
+    .attr("y", (d,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
+    .style("fill", d => color(d))
+    .text(d => d)
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle")
+
     // forceSimulation will generate (x,y) pairs for nodes and links,
     // which can be dynamically updated, for interaction.
     var simulation = forceSimulation(nodes);              // Force algorithm is applied to data.nodes
@@ -95,7 +112,7 @@ const NodeLink = (container, data) => {
         // .on("end", ticked)                                     // The "end" tag specifies when the nodes (x,y) should change
         .on("tick", ticked);
         
-    /** FUNCTIONS **/    
+    /** FUNCTIONS */    
     // This function is run at each iteration of the force algorithm, updating the nodes position.
     function ticked() {
         link
@@ -178,27 +195,6 @@ const NodeLink = (container, data) => {
         });
     };
 
-    // Add one dot in the legend for each name.
-    legendDiv.selectAll("mydots")
-    .data(jobs)
-    .enter()
-    .append("circle")
-    .attr("cx", 7)
-    .attr("cy", (d,i) => 4 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
-    .attr("r", 7)
-    .style("fill", d => color(d))
-
-    // Add the name of the job title for each previously placed dot.
-    legendDiv.selectAll("mylabels")
-    .data(jobs)
-    .enter()
-    .append("text")
-    .attr("x", 27)
-    .attr("y", (job,i) => 4 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
-    .style("fill", d => color(d))
-    .text(d => d)
-    .attr("text-anchor", "left")
-    .style("alignment-baseline", "middle")
 
     svg.call(zoomAttr);
 }
