@@ -2,16 +2,14 @@ import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOr
 import DataProcess from './DataProcess';
 import CSS from './NodeLink.module.css';
 
-// Destructure css styles
-const { tooltip } = CSS;
-const { legend } = CSS;
-
+// Destructure css styles f
+const { tooltip, legend, Svg } = CSS;
 // Set the dimensions and margins of the graph
 const 
+{ screen } = window,
 margin = {top: 10, right: 30, bottom: 30, left: 40},
-width = 2920 - margin.left - margin.right,
-height = 1120 - margin.top - margin.bottom;
-
+width = (screen.width) - margin.left - margin.right,
+height = (screen.height) - margin.top - margin.bottom;
 const NodeLink = (container, data) => {
     // Processs the dataset into nodes and links
     data = DataProcess(data);
@@ -35,11 +33,13 @@ const NodeLink = (container, data) => {
     // Append the svg object to the div container
     var svg = select(container)
     .append("svg")
+    .attr("class", Svg)
     .attr("viewBox", [0, 0, width, height])
     .on("click", reset);
 
     // Create and append tooltip to the div container
-    var tooltipDiv = select(container).append("div")
+    var tooltipDiv = select(container)
+    .append("div")
     .attr("class", tooltip)
     .style("opacity", 0);
 
@@ -48,7 +48,6 @@ const NodeLink = (container, data) => {
     var legendDiv = select(container)
     .append("svg")
     .attr("class", legend);
-
 
     var graph = svg
     .append("g")

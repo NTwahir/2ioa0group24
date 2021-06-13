@@ -7,9 +7,10 @@ const { tooltip } = CSS;
 
 // Set the dimensions and margins of the graph
 const 
+{ screen } = window,
 margin = {top: 10, right: 30, bottom: 30, left: 40},
-width = 2920 - margin.left - margin.right,
-height = 1120 - margin.top - margin.bottom;
+width = (screen.width * 0.75) - margin.left - margin.right,
+height = (screen.height * 0.75) - margin.top - margin.bottom;
 let
 start = 0,
 end = 0;
@@ -37,9 +38,7 @@ const ChordGraph = (container, data) => {
     // append the svg object to the body of the page
     var svg = select(container)
         .append("svg")
-        .attr("viewBox", [0, 0, 2920, 1120])
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("viewBox", [0, 0, width, height])
         .append("g")
         .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")")
@@ -156,10 +155,10 @@ const ChordGraph = (container, data) => {
     // Resets viewbox to starting point
     function reset() {
         // Return svg to starting position
-        graph.transition().duration(750).call(
+        svg.transition().duration(750).call(
             zoomAttr.transform,
             zoomIdentity,
-            zoomTransform(graph.node()).invert([width / 2, height / 2])
+            zoomTransform(svg.node()).invert([width / 2, height / 2])
         );
         // Set link color to default
         link.style("stroke", "#aaa");
@@ -195,7 +194,7 @@ const ChordGraph = (container, data) => {
           zoomIdentity
             .translate(width / 2, height / 2)
             .scale(2)
-            .translate(-x, -y),
+            .translate(-x, y),
           pointer(event, svg.node())
         );
     };

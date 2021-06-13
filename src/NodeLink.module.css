@@ -1,9 +1,14 @@
+.gridContainer {
+    display: grid;
+    grid-template-rows: minmax(37px, auto) auto;
+    grid-template-columns: repeat(4, 25%);
+  }
+
 .tooltip {
   z-index: 2;
   position: absolute;
   text-align: left;
   padding: 5px;
-  /* font: 12px sans-serif; */
   background: white;
   border: solid;
   border-width: 2px;
@@ -12,17 +17,46 @@
 
 .legend {
   z-index: 1;
-  text-align: left;
   position: absolute;
-  right: 20px;
-  top: 129px;
+  text-align: left;
   padding: 5px;
-  display: flex;
   flex-direction: column;
-  min-height: 10vh;
-  width: 12%;
+  width: 25%;
   background: #e5e5e5;
   border: solid;
   border-width: 2px;
   border-radius: 5px;
+}
+
+.title {
+    border: solid black 1px;
+    height: max-content;
+    grid-area: 1 / 1 / 2 / 4;
+    color: blue;
+    margin: 0;
+}
+
+.Svg {
+    border: solid black 1px;
+    display: flex;
+    grid-area: 2 / 1 / 3 / 4;
+    width: 300%;
+    height: auto;
+}
+
+.info {
+    border: solid black 1px;
+    height: max-content;
+    grid-area: 1 / 4 / 3 / 5;
+    text-align: left;
+    font-family: Helvetica;
+    padding-left: 5px;
+}
+
+.info p2 {
+    color: red;
+}
+
+.info p3 {
+    color: navy;
 }
