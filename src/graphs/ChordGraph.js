@@ -202,20 +202,6 @@ const ChordGraph = (container, data) => {
         );
     };
 
-    /** Highlights links of selected node, 
-     * either red or green based of if the email was sent 
-     * or received respectively. 
-     */
-    function highlight(d) {
-        link.style("stroke", datum => {
-            let sourceId = datum.source.id;
-            let targetId = datum.target.id;
-            return sourceId === d.id ? "red"
-                : targetId === d.id ? "green"
-                : "";
-        });
-    };
-
 
     svg.call(zoomAttr);
 }
