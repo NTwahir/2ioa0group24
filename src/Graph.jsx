@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import NodeLink from './NodeLink';
-import ChordGraph from './ChordGraph';
+import NodeLink from './graphs/NodeLink';
+import ChordGraph from './graphs/ChordGraph';
 
 export function Graph({ data, type }) {
   const containerRef = React.useRef(null);

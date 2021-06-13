@@ -1,6 +1,6 @@
 import { select, zoom, zoomIdentity, zoomTransform, pointer, scaleBand } from 'd3';
-import DataProcess from './DataProcess';
-import CSS from './CSS/ChordGraph.module.css';
+import DataProcess from '../DataProcess';
+import CSS from '../CSS/ChordGraph.module.css';
 
 // Destructure css styles
 const { tooltip } = CSS;
