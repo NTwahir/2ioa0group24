@@ -3,7 +3,7 @@ import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
 
 // Destructure css styles f
-const { tooltip, legend, Svg } = CSS;
+const { tooltip, legend, SvgOne } = CSS;
 // Set the dimensions and margins of the graph
 const 
 { screen } = window,
@@ -33,7 +33,7 @@ const NodeLink = (container, data) => {
     // Append the svg object to the div container
     var svg = select(container)
     .append("svg")
-    .attr("class", Svg)
+    .attr("class", SvgOne)
     .attr("viewBox", [0, 0, width, height])
     .on("click", reset);
 
@@ -46,8 +46,11 @@ const NodeLink = (container, data) => {
     // Initialize Legend
     var color = scaleOrdinal().domain(jobs).range(colors);
     var legendDiv = select(container)
+    .append("div")
+    .attr("class", legend)
     .append("svg")
-    .attr("class", legend);
+    .attr("height", "215px");
+    
 
     var graph = svg
     .append("g")

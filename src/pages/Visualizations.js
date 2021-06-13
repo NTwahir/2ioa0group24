@@ -2,12 +2,12 @@ import React from 'react';
 import { Graph } from '../Graph';
 import CSS from '../CSS/NodeLink.module.css';
 
-const { gridContainer, title, info } = CSS;
+const { gridContainer, titles, node, info } = CSS;
 
 const Visualizations = ({ data }) => {
     return (
         <div className={gridContainer}>
-            <h1 className={title}>Node-edge graph of email network</h1>
+            <h1 id="one" className={`${titles} ${node}`}>Node-edge graph of email network</h1>
             <Graph data={data} type={1} />
             <div className={info}>
                 <h1>Lorem Ipsum</h1>

@@ -1,16 +1,16 @@
 import { select, zoom, zoomIdentity, zoomTransform, pointer, scaleBand } from 'd3';
 import DataProcess from '../DataProcess';
-import CSS from '../CSS/ChordGraph.module.css';
+import CSS from '../CSS/NodeLink.module.css';
 
 // Destructure css styles
-const { tooltip } = CSS;
+const { tooltip, legend, SvgTwo } = CSS;
 
 // Set the dimensions and margins of the graph
 const 
 { screen } = window,
 margin = {top: 10, right: 30, bottom: 30, left: 40},
-width = (screen.width * 0.75) - margin.left - margin.right,
-height = (screen.height * 0.75) - margin.top - margin.bottom;
+width = (screen.width) - margin.left - margin.right,
+height = (screen.height) - margin.top - margin.bottom;
 let
 start = 0,
 end = 0;
@@ -38,10 +38,8 @@ const ChordGraph = (container, data) => {
     // append the svg object to the body of the page
     var svg = select(container)
         .append("svg")
+        .attr("class", SvgTwo)
         .attr("viewBox", [0, 0, width, height])
-        .append("g")
-        .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")")
         .on("click", reset);
 
     // Create and append tooltip to the div container
@@ -51,7 +49,12 @@ const ChordGraph = (container, data) => {
 
     // Initialize Legend
     var color = scaleBand().domain(jobs).range(colors);
-    var legend = svg.append("g").attr("id", "legend");
+    var legendDiv = select(container)
+    .append("div")
+    .attr("class", legend)
+    .append("svg")
+    .attr("height", "215px");
+    
     var graph = svg
     .append("g")
     .attr("id", "graph");
@@ -118,22 +121,22 @@ const ChordGraph = (container, data) => {
         .on("click", clicked);
 
     // Add one dot in the legend for each name.
-    legend.selectAll("mydots")
+    legendDiv.selectAll("mydots")
     .data(jobs)
     .enter()
     .append("circle")
-    .attr("cx", width-200)
-    .attr("cy", (d,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("cx", 10)
+    .attr("cy", (d,i) => 10 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
-    .style("fill", d => color(d))    
+    .style("fill", d => color(d))
 
     // Add the name of the job title for each previously placed dot.
-    legend.selectAll("mylabels")
+    legendDiv.selectAll("mylabels")
     .data(jobs)
     .enter()
     .append("text")
-    .attr("x", (width-180))
-    .attr("y", (d,i) => 100 + i*40) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("x", 30)
+    .attr("y", (d,i) => 10 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
     .style("fill", d => color(d))
     .text(d => d)
     .attr("text-anchor", "left")
