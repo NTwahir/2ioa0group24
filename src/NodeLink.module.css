@@ -17,11 +17,10 @@
 
 .legend {
   z-index: 1;
-  position: absolute;
   text-align: left;
   padding: 5px;
-  flex-direction: column;
-  width: 25%;
+  width: 180px;
+  height: 215px;
   background: #e5e5e5;
   border: solid;
   border-width: 2px;
