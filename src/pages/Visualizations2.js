@@ -1,6 +1,6 @@
 import React from 'react';
 import { Graph } from '../Graph';
-import CSS from '../NodeLink.module.css';
+import CSS from '../CSS/NodeLink.module.css';
 
 const { gridContainer, title, info } = CSS;
 

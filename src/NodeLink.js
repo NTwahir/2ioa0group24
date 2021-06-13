@@ -1,6 +1,6 @@
 import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, zoom, zoomIdentity, zoomTransform, pointer } from 'd3';
 import DataProcess from './DataProcess';
-import CSS from './NodeLink.module.css';
+import CSS from './CSS/NodeLink.module.css';
 
 // Destructure css styles f
 const { tooltip, legend, Svg } = CSS;

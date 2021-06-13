@@ -1,5 +1,5 @@
 import React from 'react';
-import CSS from './NavBar.module.css';
+import CSS from './CSS/NavBar.module.css';
 import { Nav, Icon } from "tabler-react";
 
 <Icon prefix="fa" name="user" />;

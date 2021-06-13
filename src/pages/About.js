@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "tabler-react/dist/Tabler.css";
 import { Grid, Card } from "tabler-react";
-import CSS from "./About.module.css"
+import CSS from "../CSS/About.module.css"
 
 const { about } = CSS;
 
