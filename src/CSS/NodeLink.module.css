@@ -1,6 +1,6 @@
 .gridContainer {
     display: grid;
-    grid-template-rows: minmax(37px, auto) auto minmax(37px, auto) auto;
+    grid-template-rows: repeat(2, minmax(37px, auto) auto);
     grid-template-columns: repeat(4, 25%);
   }
 
@@ -41,20 +41,15 @@
     grid-area: 3 / 1 / 4 / 4;
 }
 
-.SvgOne {
+
+.vis1 {
     border: solid black 1px;
-    display: flex;
     grid-area: 2 / 1 / 3 / 4;
-    width: 100%;
-    height: auto;
 }
 
-.SvgTwo {
+.vis2 {
     border: solid black 1px;
-    display: flex;
     grid-area: 4 / 1 / 5 / 4;
-    width: 100%;
-    height: auto;
 }
 
 .info {

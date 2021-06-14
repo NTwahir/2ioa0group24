@@ -3,7 +3,7 @@ import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
 
 // Destructure css styles
-const { tooltip, legend, SvgTwo } = CSS;
+const { tooltip, legend } = CSS;
 
 // Set the dimensions and margins of the graph
 const 
@@ -38,7 +38,6 @@ const ChordGraph = (container, data) => {
     // append the svg object to the body of the page
     var svg = select(container)
         .append("svg")
-        .attr("class", SvgTwo)
         .attr("viewBox", [0, 0, width, height])
         .on("click", reset);
 

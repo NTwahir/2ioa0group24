@@ -2,13 +2,15 @@ import React from 'react';
 import { Graph } from '../Graph';
 import CSS from '../CSS/NodeLink.module.css';
 
-const { gridContainer, titles, node, chord, info } = CSS;
+const { gridContainer, titles, node, chord, info, vis1, vis2 } = CSS;
 
 const Visualizations2 = ({ data }) => {
     return (
         <div className={gridContainer}>
             <h1 id="one" className={`${titles} ${node}`}>Node-edge graph of email network</h1>
-            <Graph data={data} type={1} />
+            <div className={vis1}>
+                <Graph data={data} type={1} />
+            </div>
             <div className={info}>
                 <h1>Lorem Ipsum</h1>
                 <p>Cillum duis amet cupidatat commodo eiusmod dolore anim voluptate dolor ea Lorem nulla adipisicing. Mollit do do velit duis. Excepteur anim sint consectetur tempor fugiat qui sit do ipsum labore quis labore tempor.</p>
@@ -23,7 +25,9 @@ const Visualizations2 = ({ data }) => {
                 <p>Minim velit sunt proident sit Lorem pariatur incididunt anim voluptate quis esse in. Laborum cupidatat culpa laborum tempor aliqua cupidatat qui ipsum. Ullamco et qui amet ullamco voluptate minim reprehenderit quis enim ipsum dolor consectetur. Ullamco proident nulla do excepteur quis proident id sint duis. Veniam irure officia pariatur ipsum excepteur sit ea. Pariatur aute do commodo nulla nulla ea ex dolore in occaecat non.</p>
             </div>
             <h1 id="two" className={`${titles} ${chord}`}>Chord graph of email network</h1>
-            <Graph data={data} type={2}/>
+            <div className={vis2}>
+                <Graph data={data} type={2}/>
+            </div>
         </div>
     )
 }
