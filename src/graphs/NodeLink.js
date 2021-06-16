@@ -91,7 +91,7 @@ const NodeLink = (container, data) => {
     .attr("cx", 10)
     .attr("cy", (d,i) => 10 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
     .attr("r", 7)
-    .style("fill", d => color(d))
+    .style("fill", d => color(d));
 
     // Add the name of the job title for each previously placed dot.
     legendDiv.selectAll("mylabels")
@@ -104,6 +104,8 @@ const NodeLink = (container, data) => {
     .text(d => d)
     .attr("text-anchor", "left")
     .style("alignment-baseline", "middle")
+    .style("top", "50px")
+    .style("right", "50px");
 
     // forceSimulation will generate (x,y) pairs for nodes and links,
     // which can be dynamically updated, for interaction.
