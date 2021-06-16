@@ -156,6 +156,12 @@ const ChordGraph = (container, data) => {
 
     // Resets viewbox to starting point
     function reset() {
+        document.getElementById("nodeName").innerHTML = "Name: ";
+        document.getElementById("nodeTitle").innerHTML = "Job title: ";
+        document.getElementById("nodeUserID").innerHTML = "User ID: ";
+        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: ";
+        document.getElementById("nodeEmailAddress").innerHTML = "Email: ";
+        document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: ";
         // Return svg to starting position
         svg.transition().duration(750).call(
             zoomAttr.transform,
@@ -187,6 +193,12 @@ const ChordGraph = (container, data) => {
 
     // Click function
     function clicked(event, d) {
+        document.getElementById("nodeName").innerHTML = "Name: " + d.name;
+        document.getElementById("nodeTitle").innerHTML = "Job title: " + d.job.name;
+        document.getElementById("nodeUserID").innerHTML = "User ID: " + d.id;
+        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: " + stats[d.id];
+        document.getElementById("nodeEmailAddress").innerHTML = "Email: " + d.email;
+        document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: " + d.sentiment;
         let x = -pointer(event)[0];
         let y = -pointer(event)[1];
         x = (x * 2) + (width / 2);
