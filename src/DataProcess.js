@@ -1,5 +1,5 @@
 import { nest } from 'd3-collection';
-import { ascending, sum } from 'd3';
+import { ascending, sum, mean } from 'd3';
 import _ from 'lodash';
 
 const DataProcess = (data) => {
@@ -28,6 +28,18 @@ const DataProcess = (data) => {
     // average sentiment per email sent
     let groupById = data.filter(v => v.fromId === String(96) && v.messageType === "TO");
     let averageSentiment = sum(groupById, v => v.sentiment) / groupById.length;
+
+    var sentimentPerDay = nest()
+    .key(d => d.fromId)
+    .key(v => v.date)
+    .rollup(v => {
+        let sentiment;
+        v.forEach(e => {
+           sentiment = e.sentiment;
+        });
+    return sentiment;
+    })
+    .entries(data);
 
     // 10 most negative sent messages
         // TODO
@@ -81,6 +93,7 @@ const DataProcess = (data) => {
             "name": userName,
             "email": userEmail,
             "sentiment": averageSentiment,
+            "dailySentiment": sentimentPerDay,
             "job": {
                 "name": jobName, 
                 "color": jobColor[jobName]
