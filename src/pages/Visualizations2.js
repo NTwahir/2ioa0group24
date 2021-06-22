@@ -17,9 +17,9 @@ const Visualizations2 = ({ data }) => {
                 <p id="nodeEmailsSent">Number of Emails sent: </p>
                 <p id="nodeEmailAddress">Email: </p>
                 <p id="nodeMeanSentiment">Average sentiment: </p>
-                <div className={bar}>
+                {/* <div className={bar}>
                     <Graph data={data} type={3}/>
-                </div>
+                </div> */}
             </div>
             <h1 id="two" className={`${titles} ${chord}`}>Chord graph of email network</h1>
             <Graph data={data} type={2}/>
