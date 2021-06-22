@@ -28,15 +28,21 @@ const DataProcess = (data) => {
     // average sentiment per email sent
     // let groupById = data.filter(v => v.fromId === String(96) && v.messageType === "TO");
     // let averageSentiment = sum(groupById, v => v.sentiment) / groupById.length;
+    var sentimentPerDay = nest()
+    .key(d => d.fromId)
+    .key(v => v.date)
+    .rollup(v => {
+        let sentiment;
+        v.forEach(e => {
+           sentiment = e.sentiment;
+        });
+        return sentiment;
+    })
+    .entries(data);
+    console.log({sentimentPerDay});
 
     // 10 most negative sent messages
         // TODO
-
-    // Processs the dataset into nodes and links
-    let nodes = [];
-    let links = [];
-    let linkInfo = [];
-
 
     // Assigning colors to job titles
     let jobs = [];
@@ -57,48 +63,61 @@ const DataProcess = (data) => {
     uniqJob.forEach(v => jobs.push(v.values[0].fromJobtitle));
     let jobColor = _.zipObject(jobs, colors);
 
-    uniqueNodes.forEach(n => {
-        // Creating the nodes and links object
-        let jobName = n.values[0].fromJobtitle;
-        let userName = [];
 
-        // Creating Array of usernames
-        let userEmail = n.values[0].fromEmail;
-        let arr = userEmail.substring(0, userEmail.lastIndexOf("@"));
-        arr = arr.split(".").filter(el => el !== "");
-        userName.push(arr);
+    function process(array) {
+        // Processs the dataset into nodes and links
+        let nodes = [];
+        let links = [];
+        let linkInfo = [];
 
-        // Adding capital letters to each first and surname.
-        userName.forEach(subArray => {
-            subArray.forEach((el, i) => {
-                subArray[i] = (el.charAt(0).toUpperCase() + el.substring(1));
+        array.forEach(n => {
+            // Creating the nodes and links object
+            let jobName = n.values[0].fromJobtitle;
+            let userName = [];
+
+            // Creating Array of usernames
+            let userEmail = n.values[0].fromEmail;
+            let arr = userEmail.substring(0, userEmail.lastIndexOf("@"));
+            arr = arr.split(".").filter(el => el !== "");
+            userName.push(arr);
+
+            // Adding capital letters to each first and surname.
+            userName.forEach(subArray => {
+                subArray.forEach((el, i) => {
+                    subArray[i] = (el.charAt(0).toUpperCase() + el.substring(1));
+                })
+                userName = subArray.join(" ");
             })
-            userName = subArray.join(" ");
-        })
-        
-        nodes.push({
-            "id": n.key, 
-            "name": userName,
-            "email": userEmail,
-            "job": {
-                "name": jobName, 
-                "color": jobColor[jobName]
-            }
-        });
-
-        linkInfo.push({
-            "id": n.key, 
-            "job": jobName, 
-            "thickness": n.values.length
-        });
-
-        n.values.forEach(v => {
-            links.push({
-                "source": v.fromId, 
-                "target": v.toId
+            
+            nodes.push({
+                "id": n.key, 
+                "name": userName,
+                "email": userEmail,
+                "job": {
+                    "name": jobName, 
+                    "color": jobColor[jobName]
+                }
             });
-        });
-    })
+
+            linkInfo.push({
+                "id": n.key, 
+                "job": jobName, 
+                "thickness": n.values.length
+            });
+
+            n.values.forEach(v => {
+                links.push({
+                    "source": v.fromId, 
+                    "target": v.toId
+                });
+            });
+        })
+
+        return [nodes, links, linkInfo];
+    }
+
+    let [nodes, links, linkInfo] = process(uniqueNodes);
+    let sortedNodes = nest().key(d => d.job.name).sortKeys(ascending).entries(nodes);
 
     // filter out duplicate {toID, fromID} object pairs
     links = links.filter((v,i,a) => 
@@ -106,11 +125,11 @@ const DataProcess = (data) => {
     );
 
 
-    let processedData = {"nodes": nodes, "links": links, "jobs": jobs, "stats": stats};
+    let processedData = {"nodes": nodes, "links": links, "jobs": jobs, "stats": stats, "sortedNodes": sortedNodes};
     // TODO: get the count of msgs and append to links.thickness
 
     // Console debug
-    console.log({uniqueNodes, processedData, data, linkInfo, jobColor});
+    console.log({uniqueNodes, processedData, data, linkInfo, jobColor, sortedNodes});
 
 
     return processedData;

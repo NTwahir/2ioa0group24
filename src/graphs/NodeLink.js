@@ -1,6 +1,10 @@
 import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, zoom, zoomIdentity, zoomTransform, pointer } from 'd3';
 import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
+// import { interaction } from '../LinkedInteraction';
+
+// variables to be exported
+let svg, node, link;
 
 // Destructure css styles f
 const { tooltip, legend } = CSS;
@@ -31,7 +35,7 @@ const NodeLink = (container, data) => {
     ];
 
     // Append the svg object to the div container
-    var svg = select(container)
+    svg = select(container)
     .append("svg")
     .attr("viewBox", [0, 0, width, height])
     .on("click", reset);
@@ -56,7 +60,7 @@ const NodeLink = (container, data) => {
     .attr("id", "graph");
 
     // Initialize the links
-    var link = graph
+    link = graph
         .selectAll("line")
         .data(links)
         .enter()
@@ -65,7 +69,7 @@ const NodeLink = (container, data) => {
         .style("stroke-width", 1)
 
     // Initialize the nodes
-    var node = graph
+    node = graph
         .selectAll("circle")
         .data(nodes)
         .enter()
@@ -116,9 +120,8 @@ const NodeLink = (container, data) => {
                 .distance(0).strength(0.05)
         )
         .force("charge", forceManyBody().strength(-4000))        // This adds repulsion between nodes.
-        .force("center", forceCenter(2920 / 2, 2080 / 2))    // This force attracts nodes to the center of the svg area
-        // .on("end", ticked)                                     // The "end" tag specifies when the nodes (x,y) should change
-        .on("tick", ticked);
+        .force("center", forceCenter(2920 / 2, 2080 / 2))    // This force attracts nodes to the center of the svg area                   
+        .on("tick", ticked);                                // The "tick" tag specifies when the nodes (x,y) should change
         
     /** FUNCTIONS */    
     // This function is run at each iteration of the force algorithm, updating the nodes position.
@@ -203,7 +206,7 @@ const NodeLink = (container, data) => {
         });
     };
 
-
+    // interaction();
     svg.call(zoomAttr);
 }
 

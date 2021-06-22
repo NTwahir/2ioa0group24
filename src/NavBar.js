@@ -11,8 +11,7 @@ const NavBar = () => {
                 <Nav>
                     <Nav.Item to="/" value="2IOAO Visualization Tool" icon="home" />
                     <Nav.Item to="/About" value="About Us" icon="globe" />
-                    <Nav.Item to="/Visualizations" value="Visualizations" icon="star" />
-                    <Nav.Item to="/Visualizations2" value="Chord Diagram" />
+                    <Nav.Item to="/Visualizations2" value="Visualizations" icon="star" />
                     <Nav.Item to="https://github.com/NTwahir/2ioa0group24" value="GitHub" icon="github" />
                 </Nav>
         </div>

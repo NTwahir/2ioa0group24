@@ -1,6 +1,10 @@
-import { select, zoom, zoomIdentity, zoomTransform, pointer, scaleBand } from 'd3';
+import { select, zoom, zoomIdentity, zoomTransform, pointer, scaleBand, scalePoint } from 'd3';
 import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
+// import { interaction } from '../LinkedInteraction';
+
+// variables to be exported
+let svg, node, link;
 
 // Destructure css styles
 const { tooltip, legend } = CSS;
@@ -20,7 +24,7 @@ const ChordGraph = (container, data) => {
     data = DataProcess(data);
 
     // Destructure data to prevent redundancy
-    const { nodes, links, jobs, stats } = data;
+    const { nodes, links, jobs, stats, sortedNodes } = data;
     let colors = [
         "#003f5c",
         "#2f4b7c",
@@ -36,9 +40,10 @@ const ChordGraph = (container, data) => {
     ];
 
     // append the svg object to the body of the page
-    var svg = select(container)
+    svg = select(container)
         .append("svg")
         .attr("viewBox", [0, 0, width, height])
+        .attr("height", "100%")
         .on("click", reset);
 
     // Create and append tooltip to the div container
@@ -59,21 +64,29 @@ const ChordGraph = (container, data) => {
     .attr("id", "graph");
 
     // List of node names
-    let allNodes = nodes.map(d => d.name)
+    let allNodes = [];
+    let idToNode = {};
+    sortedNodes.forEach(node => {
+        node.values.forEach(value => {
+            allNodes.push(value.name)
+            idToNode[value.id] = value
+        })
+    })
+
     // A linear scale to position the nodes on the X axis
-    let x = scaleBand()
-        .range([0, width])
+    const y = scalePoint()
+        .range([0, height])
         .domain(allNodes)
 
     // Add links between nodes. Here is the tricky part.
     // In my input data, links are provided between nodes -id-, NOT between node names.
     // So I have to do a link between this id and the name
-    let idToNode = {};
-    nodes.forEach(n => idToNode[n.id] = n);
+    // let idToNode = {};
+    // nodes.forEach(n => idToNode[n.id] = n);
     // Cool, now if I do idToNode["2"].name I've got the name of the node with id 2
 
     // Add the links
-    var link = graph
+    link = graph
     .append("g")
     .attr("class", "links")
     .selectAll("links")
@@ -81,28 +94,28 @@ const ChordGraph = (container, data) => {
     .enter()
     .append('path')
     .attr('d', d => {
-        start = x(idToNode[d.source].name)    // X position of start node on the X axis
-        end = x(idToNode[d.target].name)      // X position of end node
-        return ['M', start, height-30,    // the arc starts at the coordinate x=start, y=height-30 (where the starting node is)
+        start = y(idToNode[d.source].name)    // X position of start node on the X axis
+        end = y(idToNode[d.target].name)      // X position of end node
+        return ['M', 50, start, //height-30,    // the arc starts at the coordinate x=start, y=height-30 (where the starting node is)
         'A',                            // This means we're gonna build an elliptical arc
         (start - end)/2, ',',    // Next 2 lines are the coordinates of the inflexion point. Height of this point is proportional with start - end distance
         (start - end)/2, 0, 0, ',',
-        start < end ? 1 : 0, end, ',', height-30] // We always want the arc on top. So if end is before start, putting 0 here turn the arc upside down.
+        start < end ? 1 : 0, 50, end, ',', ]//height-30] // We always want the arc on top. So if end is before start, putting 0 here turn the arc upside down.
         .join(' ');
     })
     .style("fill", "none")
     .attr("stroke", "#aaa");
 
     // Add the circle for the nodes
-    var node = graph
+    node = graph
     .append("g")
     .attr("class", "nodes")
     .selectAll("nodes")
     .data(nodes)
     .enter()
     .append("circle")
-        .attr("cx", d => x(d.name))
-        .attr("cy", height-30)
+        .attr("cy", d => y(d.name))
+        .attr("cx", 50)
         .attr("r", 8)
         .style("fill",  n => n.job.color)
     .on("mouseover", mouseOver)
@@ -197,15 +210,17 @@ const ChordGraph = (container, data) => {
         graph.transition().duration(750).call(
           zoomAttr.transform,
           zoomIdentity
-            .translate(width / 2 , height )
+            .translate(width / 2 , height / 2)
             .scale(2)
             .translate(-x, y),
           pointer(event, svg.node())
         );
     };
 
-
+    // interaction()
     svg.call(zoomAttr);
 }
 
+
+export { svg, node, link };
 export default ChordGraph;
