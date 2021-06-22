@@ -151,6 +151,12 @@ const NodeLink = (container, data) => {
 
     // Resets viewbox to starting point
     function reset() {
+        document.getElementById("nodeName").innerHTML = "Name: ";
+        document.getElementById("nodeTitle").innerHTML = "Job title: ";
+        document.getElementById("nodeUserID").innerHTML = "User ID: ";
+        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: ";
+        document.getElementById("nodeEmailAddress").innerHTML = "Email: ";
+        document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: ";
         // Return svg to starting position
         svg.transition().duration(750).call(
             zoomAttr.transform,
@@ -179,6 +185,12 @@ const NodeLink = (container, data) => {
 
     // Click function
     function clicked(event, d) {
+        document.getElementById("nodeName").innerHTML = "Name: " + d.name;
+        document.getElementById("nodeTitle").innerHTML = "Job title: " + d.job.name;
+        document.getElementById("nodeUserID").innerHTML = "User ID: " + d.id;
+        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: " + stats[d.id];
+        document.getElementById("nodeEmailAddress").innerHTML = "Email: " + d.email;
+        document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: " + d.sentiment;
         highlight(d);
         const {x, y} = d;
         event.stopPropagation();

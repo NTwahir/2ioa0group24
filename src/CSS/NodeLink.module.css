@@ -53,6 +53,14 @@
     grid-area: 2 / 2 / 3 / 3;
 }
 
+.SvgThree {
+    border: solid black 1px;
+    display: flex;
+    grid-area: 4 / 1 / 5 / 4;
+    width: 100%;
+    height: auto;
+}
+
 .info {
     border: solid black 1px;
     height: max-content;

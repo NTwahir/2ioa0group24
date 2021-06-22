@@ -1,43 +1,44 @@
-import React from 'react';
 import { scaleBand, scaleLinear, select, axisBottom, axisLeft, max } from 'd3';
-import { nest } from 'd3-collection';
+import DataProcess from '../DataProcess';
+import CSS from '../CSS/NodeLink.module.css';
 
-export var node = document.createElement('div');
+// Destructure css styles
+const { tooltip, legend, SvgThree } = CSS;
+// Set the dimensions and margins of the graph
+const 
+{ screen } = window,
+margin = {top: 10, right: 30, bottom: 90, left: 40},
+    width = 460 - margin.left - margin.right,
+    height = 450 - margin.top - margin.bottom;
 
-export function NodeGraph({ data }) {
+const NodeGraph = (container, data) => {
 
-    
-    // Group by fromEmail and count
-    var numberSent = nest()
-        .key(d => d.fromEmail)
-        .rollup(v => v.length)
-        .entries(data);
+    data = DataProcess(data);
 
-    // set the dimensions and margins of the graph
-    const 
-    margin = {top: 30, right: 30, bottom: 150, left: 60},
-    width = 1920,
-    height = 1080,
-    innerWidth = width - margin.left - margin.right,
-    innerHeight = height - margin.top - margin.bottom;
+    var sentimentPerDay = data;
+    let ar = [];
 
-    // append the svg object to the body of the page
-    var svg = select(node)
+    Array.from(sentimentPerDay).forEach(id => {
+        id.values.forEach(e => {
+                ar.push(e.date.value);
+            });
+        });
+
+    console.log(ar)
+
+    var svg = select(container)
     .append("svg")
-    .attr("width", innerWidth + margin.left + margin.right)
-    .attr("height", innerHeight + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
+    .attr("class", SvgThree)
+    .attr("viewBox", [0, 0, width, height])
 
     // X axis
     var x = scaleBand()
-    .range([ 0, innerWidth ])
-    .domain(numberSent.map(function(d) { return d.key; }))
+    .range([ -1, 1 ])
+    .domain(ar)
     .padding(0.2);
 
     svg.append("g")
-    .attr("transform", "translate(0," + innerHeight + ")")
+    .attr("transform", "translate(0," + height + ")")
     .call(axisBottom(x))
     .selectAll("text")
     .attr("transform", "translate(-10,0)rotate(-45)")
@@ -45,56 +46,35 @@ export function NodeGraph({ data }) {
 
     // Add Y axis
     var y = scaleLinear()
-    .domain([0, max(numberSent, n => n.value)])
-    .range([ innerHeight, 0]);
+    .domain(ar)
+    .range([ -1, 1 ]);
     svg.append("g")
     .call(axisLeft(y));
 
     // Bars
     svg.selectAll("mybar")
-    .data(numberSent)
+    .data(sentimentPerDay)
     .exit()
     .remove()
 
     svg.selectAll("mybar")
-    .data(numberSent)
+    .data(sentimentPerDay)
     .enter()
     .append("rect")
     .attr("x", function(d) { return x(d.key); })
     .attr("y", function(d) { return y(d.value); })
     .attr("width", x.bandwidth())
-    .attr("height", function(d) { return innerHeight - y(d.value); })
+    .attr("height", function(d) { return height - y(d.value); })
     .attr("fill", "#69b3a2")
 
+    // Animation
+    svg.selectAll("rect")
+    .transition()
+    .duration(800)
+    .attr("y", d => y(d.value))
+    .attr("height", d => height - y(d.value))
+    .delay((d,i) => {console.log(i); return i*100})
 
-    // Console debugging
-    const debug = () => {
-        var max_val = max(numberSent, n => n.value);
-        console.log({numberSent, max_val, data});
-    }
-
-    debug()
-    return (
-        <>
-            <svg width={width} height={height}>
-                <g transform={`translate(${margin.left}, ${margin.top})`}>
-                    <g
-                       transform={`translate(0, ${innerHeight})`}
-                       textAnchor="end"
-                    >{axisBottom(x)}</g>
-                    <g></g>
-                    {numberSent.map(d => (
-                        <rect 
-                            key={d.key}
-                            x={x(d.key)} 
-                            y={y(d.value)} 
-                            width={x.bandwidth()} 
-                            height={innerHeight - y(d.value)}
-                            fill="#69b3a2"
-                        />
-                    ))}
-                </g>
-            </svg>
-        </>
-    )
 }
+
+export default NodeGraph;
