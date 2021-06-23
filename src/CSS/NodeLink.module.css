@@ -51,6 +51,7 @@
 .vis2 {
     border: solid black 1px;
     grid-area: 2 / 2 / 3 / 3;
+    align-self: center;
 }
 
 .SvgThree {

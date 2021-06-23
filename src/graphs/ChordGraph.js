@@ -42,8 +42,7 @@ const ChordGraph = (container, data) => {
     // append the svg object to the body of the page
     svg = select(container)
         .append("svg")
-        .attr("viewBox", [0, 0, width, height])
-        .attr("height", "100%")
+        .attr("viewBox", [0, 0, 648, 1152])
         .on("click", reset);
 
     // Create and append tooltip to the div container
@@ -53,11 +52,11 @@ const ChordGraph = (container, data) => {
 
     // Initialize Legend
     var color = scaleBand().domain(jobs).range(colors);
-    var legendDiv = select(container)
-    .append("div")
-    .attr("class", legend)
-    .append("svg")
-    .attr("height", "215px");
+    // var legendDiv = select(container)
+    // .append("div")
+    // .attr("class", legend)
+    // .append("svg")
+    // .attr("height", "215px");
     
     var graph = svg
     .append("g")
@@ -96,11 +95,11 @@ const ChordGraph = (container, data) => {
     .attr('d', d => {
         start = y(idToNode[d.source].name)    // X position of start node on the X axis
         end = y(idToNode[d.target].name)      // X position of end node
-        return ['M', 50, start, //height-30,    // the arc starts at the coordinate x=start, y=height-30 (where the starting node is)
+        return ['M', 25, start, //height-30,    // the arc starts at the coordinate x=start, y=height-30 (where the starting node is)
         'A',                            // This means we're gonna build an elliptical arc
         (start - end)/2, ',',    // Next 2 lines are the coordinates of the inflexion point. Height of this point is proportional with start - end distance
         (start - end)/2, 0, 0, ',',
-        start < end ? 1 : 0, 50, end, ',', ]//height-30] // We always want the arc on top. So if end is before start, putting 0 here turn the arc upside down.
+        start < end ? 1 : 0, 25, end, ',', ]//height-30] // We always want the arc on top. So if end is before start, putting 0 here turn the arc upside down.
         .join(' ');
     })
     .style("fill", "none")
@@ -115,8 +114,8 @@ const ChordGraph = (container, data) => {
     .enter()
     .append("circle")
         .attr("cy", d => y(d.name))
-        .attr("cx", 50)
-        .attr("r", 8)
+        .attr("cx", 25)
+        .attr("r", 5)
         .style("fill",  n => n.job.color)
     .on("mouseover", mouseOver)
     .on("mouseout", function(d) {
@@ -132,27 +131,27 @@ const ChordGraph = (container, data) => {
     node
         .on("click", clicked);
 
-    // Add one dot in the legend for each name.
-    legendDiv.selectAll("mydots")
-    .data(jobs)
-    .enter()
-    .append("circle")
-    .attr("cx", 10)
-    .attr("cy", (d,i) => 10 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
-    .attr("r", 7)
-    .style("fill", d => color(d))
+    // // Add one dot in the legend for each name.
+    // legendDiv.selectAll("mydots")
+    // .data(jobs)
+    // .enter()
+    // .append("circle")
+    // .attr("cx", 10)
+    // .attr("cy", (d,i) => 10 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
+    // .attr("r", 7)
+    // .style("fill", d => color(d))
 
-    // Add the name of the job title for each previously placed dot.
-    legendDiv.selectAll("mylabels")
-    .data(jobs)
-    .enter()
-    .append("text")
-    .attr("x", 30)
-    .attr("y", (d,i) => 10 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
-    .style("fill", d => color(d))
-    .text(d => d)
-    .attr("text-anchor", "left")
-    .style("alignment-baseline", "middle")
+    // // Add the name of the job title for each previously placed dot.
+    // legendDiv.selectAll("mylabels")
+    // .data(jobs)
+    // .enter()
+    // .append("text")
+    // .attr("x", 30)
+    // .attr("y", (d,i) => 10 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
+    // .style("fill", d => color(d))
+    // .text(d => d)
+    // .attr("text-anchor", "left")
+    // .style("alignment-baseline", "middle")
 
 
     /** FUNCTIONS */   
