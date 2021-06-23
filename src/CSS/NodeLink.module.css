@@ -31,17 +31,22 @@
 }
 
 .titles {
-    border: solid black 1px;
+    border: solid #6AB1C7 1px;
     height: max-content;
     margin: 0;
+    background-color: #6AB1C7;
 }
 
 .node {
     grid-area: 1 / 1 / 2 / 2;
+    border-radius: 0 25px 0 0;
+    margin-right: 1px;
 }
 
 .chord {
     grid-area: 1 / 2 / 2 / 3;
+    border-radius: 25px 0 0 0;
+    margin-left: 1px;
 }
 
 
