@@ -26,6 +26,7 @@
     border: solid;
     border-width: 2px;
     border-radius: 5px;
+    top: 0;
 }
 
 .titles {

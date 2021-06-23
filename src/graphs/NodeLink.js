@@ -12,8 +12,8 @@ const { tooltip, legend } = CSS;
 const 
 { screen } = window,
 margin = {top: 10, right: 30, bottom: 30, left: 40},
-width = (screen.width) - margin.left - margin.right,
-height = (screen.height) - margin.top - margin.bottom;
+width = 648 - margin.left - margin.right,
+height = 1152 - margin.top - margin.bottom;
 const NodeLink = (container, data) => {
     // Processs the dataset into nodes and links
     data = DataProcess(data);
@@ -37,7 +37,7 @@ const NodeLink = (container, data) => {
     // Append the svg object to the div container
     svg = select(container)
     .append("svg")
-    .attr("viewBox", [0, 0, width, height])
+    .attr("viewBox", [0, 0, 648, 1152])
     .on("click", reset);
 
     // Create and append tooltip to the div container
@@ -120,7 +120,7 @@ const NodeLink = (container, data) => {
                 .distance(0).strength(0.05)
         )
         .force("charge", forceManyBody().strength(-4000))        // This adds repulsion between nodes.
-        .force("center", forceCenter(2920 / 2, 2080 / 2))    // This force attracts nodes to the center of the svg area                   
+        .force("center", forceCenter(1152 / 2, 648 / 2))    // This force attracts nodes to the center of the svg area                   
         .on("tick", ticked);                                // The "tick" tag specifies when the nodes (x,y) should change
         
     /** FUNCTIONS */    
