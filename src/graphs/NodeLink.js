@@ -37,7 +37,7 @@ const NodeLink = (container, data) => {
     // Append the svg object to the div container
     svg = select(container)
     .append("svg")
-    .attr("viewBox", [0, 0, 648, 1152])
+    .attr("viewBox", [0, 0, 648, 1152]) //make 5x smaller
     .on("click", reset);
 
     // Create and append tooltip to the div container

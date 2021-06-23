@@ -52,11 +52,11 @@ const ChordGraph = (container, data) => {
 
     // Initialize Legend
     var color = scaleBand().domain(jobs).range(colors);
-    // var legendDiv = select(container)
-    // .append("div")
-    // .attr("class", legend)
-    // .append("svg")
-    // .attr("height", "215px");
+    var legendDiv = select(container)
+    .append("div")
+    .attr("class", legend)
+    .append("svg")
+    .attr("height", "215px");
     
     var graph = svg
     .append("g")
@@ -131,27 +131,27 @@ const ChordGraph = (container, data) => {
     node
         .on("click", clicked);
 
-    // // Add one dot in the legend for each name.
-    // legendDiv.selectAll("mydots")
-    // .data(jobs)
-    // .enter()
-    // .append("circle")
-    // .attr("cx", 10)
-    // .attr("cy", (d,i) => 10 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
-    // .attr("r", 7)
-    // .style("fill", d => color(d))
+    // Add one dot in the legend for each name.
+    legendDiv.selectAll("mydots")
+    .data(jobs)
+    .enter()
+    .append("circle")
+    .attr("cx", 10)
+    .attr("cy", (d,i) => 10 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
+    .attr("r", 7)
+    .style("fill", d => color(d))
 
-    // // Add the name of the job title for each previously placed dot.
-    // legendDiv.selectAll("mylabels")
-    // .data(jobs)
-    // .enter()
-    // .append("text")
-    // .attr("x", 30)
-    // .attr("y", (d,i) => 10 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
-    // .style("fill", d => color(d))
-    // .text(d => d)
-    // .attr("text-anchor", "left")
-    // .style("alignment-baseline", "middle")
+    // Add the name of the job title for each previously placed dot.
+    legendDiv.selectAll("mylabels")
+    .data(jobs)
+    .enter()
+    .append("text")
+    .attr("x", 30)
+    .attr("y", (d,i) => 10 + i*20) // 100 is where the first dot appears. 25 is the distance between dots
+    .style("fill", d => color(d))
+    .text(d => d)
+    .attr("text-anchor", "left")
+    .style("alignment-baseline", "middle")
 
 
     /** FUNCTIONS */   

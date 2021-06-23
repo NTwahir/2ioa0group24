@@ -8,7 +8,9 @@ const Visualizations2 = ({ data }) => {
     return (
         <div className={gridContainer}>
             <h1 id="one" className={`${titles} ${node}`}>Node-edge graph of email network</h1>
-            <Graph data={data} type={1} />
+            <div className={vis1}>
+                <Graph data={data} type={1} />
+            </div>
             <div className={info} id="nodeDescription">
                 <h1>Node Information:</h1>
                 <p id="nodeName">Name: </p>
