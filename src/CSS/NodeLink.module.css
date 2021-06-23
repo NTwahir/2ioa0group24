@@ -1,7 +1,7 @@
 .gridContainer {
     display: grid;
     grid-template-rows: minmax(37px, auto);
-    grid-template-columns: repeat(3, 33%);
+    grid-template-columns: repeat(3, calc(100% / 3));
   }
 
 .tooltip {
