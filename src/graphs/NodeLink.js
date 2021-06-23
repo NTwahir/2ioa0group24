@@ -53,7 +53,9 @@ const NodeLink = (container, data) => {
     .attr("class", legend)
     .append("svg")
     .attr("height", "215px");
-    
+
+    // boolean used in toggle() to check if a node has been clicked
+    var showInfo = false;
 
     var graph = svg
     .append("g")
@@ -151,6 +153,8 @@ const NodeLink = (container, data) => {
 
     // Resets viewbox to starting point
     function reset() {
+        showInfo = false;
+        toggle()
         document.getElementById("nodeName").innerHTML = "Name: ";
         document.getElementById("nodeTitle").innerHTML = "Job title: ";
         document.getElementById("nodeUserID").innerHTML = "User ID: ";
@@ -183,8 +187,23 @@ const NodeLink = (container, data) => {
           .style("top", (event.pageY) + "px");
     }
 
+    function toggle() {
+        var intro = document.getElementById("toolIntro");
+        var description = document.getElementById("nodeDescription")
+        if (intro.style.display === "block" && showInfo === true) {
+            intro.style.display = "none";
+            description.style.display = "block";
+            showInfo = false;
+        } else {
+            intro.style.display = "block";
+            description.style.display = "none";
+        }
+      } 
+
     // Click function
     function clicked(event, d) {
+        showInfo = true;
+        toggle()
         document.getElementById("nodeName").innerHTML = "Name: " + d.name;
         document.getElementById("nodeTitle").innerHTML = "Job title: " + d.job.name;
         document.getElementById("nodeUserID").innerHTML = "User ID: " + d.id;

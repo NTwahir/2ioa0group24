@@ -72,6 +72,9 @@ const ChordGraph = (container, data) => {
         })
     })
 
+    // boolean used in toggle() to check if a node has been clicked
+    var showInfo = false;
+
     // A linear scale to position the nodes on the X axis
     const y = scalePoint()
         .range([0, height])
@@ -167,6 +170,8 @@ const ChordGraph = (container, data) => {
 
     // Resets viewbox to starting point
     function reset() {
+        showInfo = false;
+        toggle()
         document.getElementById("nodeName").innerHTML = "Name: ";
         document.getElementById("nodeTitle").innerHTML = "Job title: ";
         document.getElementById("nodeUserID").innerHTML = "User ID: ";
@@ -202,8 +207,23 @@ const ChordGraph = (container, data) => {
           .style('stroke-width', function (link_d) { return link_d.source === d.id || link_d.target === d.id ? 4 : 1;})
     }
 
+    function toggle() {
+        var intro = document.getElementById("toolIntro");
+        var description = document.getElementById("nodeDescription")
+        if (intro.style.display === "block" && showInfo === true) {
+            intro.style.display = "none";
+            description.style.display = "block";
+            showInfo = false;
+        } else {
+            intro.style.display = "block";
+            description.style.display = "none";
+        }
+      } 
+
     // Click function
     function clicked(event, d) {
+        showInfo = true;
+        toggle()
         document.getElementById("nodeName").innerHTML = "Name: " + d.name;
         document.getElementById("nodeTitle").innerHTML = "Job title: " + d.job.name;
         document.getElementById("nodeUserID").innerHTML = "User ID: " + d.id;

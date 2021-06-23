@@ -52,13 +52,13 @@
 
 .vis1 {
     position: relative;
-    border: solid black 1px;
+    border: solid #6AB1C7 1px;
     grid-area: 2 / 1 / 3 / 2;
 }
 
 .vis2 {
     position: relative;
-    border: solid black 1px;
+    border: solid #6AB1C7 1px;
     grid-area: 2 / 2 / 3 / 3;
 }
 
@@ -77,4 +77,22 @@
     text-align: left;
     font-family: Helvetica;
     padding-left: 5px;
+}
+
+.introduction {
+    border: solid black 1px;
+    height: max-content;
+    grid-area: 1 / 3 / 3 / 4;
+    text-align: left;
+    font-family: Helvetica;
+    padding-left: 5px;
+}
+
+li { 
+    margin: 10px; 
+}
+
+span.important {
+    font-weight: 800;
+    text-decoration: underline;
 }
