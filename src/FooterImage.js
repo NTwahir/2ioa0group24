@@ -7,7 +7,7 @@ const { footer } = CSS;
 const FooterImage = () => {
     return (
         <div>
-            <img classname={footer} src={footerLogo} alt="CSVIZ Logo"/>
+            <img className={footer} src={footerLogo} alt="CSVIZ Logo"/>
         </div>
     )
 }

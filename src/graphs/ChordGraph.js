@@ -1,4 +1,4 @@
-import { select, zoom, zoomIdentity, zoomTransform, pointer, scaleBand, scalePoint } from 'd3';
+import { select, zoom, zoomIdentity, zoomTransform, scaleBand, scalePoint } from 'd3';
 import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
 // import { interaction } from '../LinkedInteraction';
@@ -232,22 +232,6 @@ const ChordGraph = (container, data) => {
         document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: " + stats[d.id];
         document.getElementById("nodeEmailAddress").innerHTML = "Email: " + d.email;
         document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: " + d.sentiment;
-        let x = -pointer(event)[0];
-        let y = -pointer(event)[1];
-        x = (x * 2) + (width / 2);
-        y = (y * 2) + (height / 2);
-        console.log(x);
-        console.log(y);
-
-        event.stopPropagation();
-        graph.transition().duration(750).call(
-          zoomAttr.transform,
-          zoomIdentity
-            .translate(width / 2 , height / 2)
-            .scale(2)
-            .translate(-x, y),
-          pointer(event, svg.node())
-        );
     };
 
     // interaction()
