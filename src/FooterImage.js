@@ -4,7 +4,6 @@ import CSS from './CSS/FooterImage.module.css';
 
 const { footer } = CSS;
 
-
 const FooterImage = () => {
     return (
         <div>
