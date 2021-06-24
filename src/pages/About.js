@@ -48,23 +48,11 @@ class About extends Component {
             </Card>
             </Grid.Col>
             </Grid.Row>
-            <Grid.Row cards deck className={about}>
-            <Grid.Col md={5}>
-            <Card className={iframe}>
-                <Card.Status color="black" side />
-                    <Card.Header>
-                        <Card.Title>Video</Card.Title>
-                    </Card.Header>
-                    <Card.Body>
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/3VHdJkp0vKk" 
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/3VHdJkp0vKk" 
                     title="YouTube video player" 
                     frameBorder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowFullScreen></iframe>
-                    </Card.Body>
-            </Card>
-            </Grid.Col>
-            </Grid.Row>
             </>
         );
       }

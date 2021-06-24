@@ -5,7 +5,7 @@
     border-right-style: solid;
 }
 
-.iframe {
+iframe {
     border-left-width: -3px;
     border-left-style: solid;
     border-right-width: 3px;
