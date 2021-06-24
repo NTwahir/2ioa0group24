@@ -4,3 +4,9 @@ img {
     height: 80px;
     float: right;
 }
+
+.footerTab {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
