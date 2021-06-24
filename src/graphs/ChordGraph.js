@@ -19,6 +19,10 @@ let
 start = 0,
 end = 0;
 
+// boolean used in toggle() to check if a node has been clicked
+var showInfo = false;
+
+
 const ChordGraph = (container, data) => {
     // Processs the dataset into nodes and links
     data = DataProcess(data);
@@ -72,8 +76,6 @@ const ChordGraph = (container, data) => {
         })
     })
 
-    // boolean used in toggle() to check if a node has been clicked
-    var showInfo = false;
 
     // A linear scale to position the nodes on the X axis
     const y = scalePoint()

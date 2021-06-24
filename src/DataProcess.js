@@ -1,5 +1,5 @@
 import { nest } from 'd3-collection';
-import { ascending, sum, mean } from 'd3';
+import { ascending } from 'd3';
 import _ from 'lodash';
 
 const DataProcess = (data) => {

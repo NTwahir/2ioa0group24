@@ -8,9 +8,9 @@ let svg, node, link;
 
 // Destructure css styles f
 const { tooltip, legend } = CSS;
+
 // Set the dimensions and margins of the graph
 const 
-{ screen } = window,
 margin = {top: 10, right: 30, bottom: 30, left: 40},
 width = 648 - margin.left - margin.right,
 height = 1152 - margin.top - margin.bottom;
