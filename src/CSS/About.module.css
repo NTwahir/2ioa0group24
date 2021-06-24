@@ -4,3 +4,12 @@
     border-right-width: 3px;
     border-right-style: solid;
 }
+
+.iframe {
+    border-left-width: -3px;
+    border-left-style: solid;
+    border-right-width: 3px;
+    border-right-style: solid;
+    margin: auto;
+    display: block;
+}

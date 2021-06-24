@@ -3,11 +3,12 @@ import "tabler-react/dist/Tabler.css";
 import { Grid, Card } from "tabler-react";
 import CSS from "../CSS/About.module.css"
 
-const { about } = CSS;
+const { about, iframe } = CSS;
 
 class About extends Component {
     render() {
         return (
+            <>
             <Grid.Row cards deck className={about}>
             <Grid.Col md={4}>
             <Card>
@@ -47,6 +48,24 @@ class About extends Component {
             </Card>
             </Grid.Col>
             </Grid.Row>
+            <Grid.Row cards deck className={about}>
+            <Grid.Col md={5}>
+            <Card className={iframe}>
+                <Card.Status color="black" side />
+                    <Card.Header>
+                        <Card.Title>Video</Card.Title>
+                    </Card.Header>
+                    <Card.Body>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/3VHdJkp0vKk" 
+                    title="YouTube video player" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen></iframe>
+                    </Card.Body>
+            </Card>
+            </Grid.Col>
+            </Grid.Row>
+            </>
         );
       }
 }
