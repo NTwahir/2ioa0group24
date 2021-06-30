@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import NodeLink from './graphs/NodeLink';
 import ChordGraph from './graphs/ChordGraph';
 import NodeGraph from './graphs/NodeGraph';
-import { interaction } from './LinkedInteraction';
 
 
 export function Graph({ data, type }) {
@@ -20,6 +19,6 @@ export function Graph({ data, type }) {
     return destroyFn;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  interaction();
+
   return <div ref={containerRef} />;
 }

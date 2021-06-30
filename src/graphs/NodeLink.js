@@ -1,7 +1,7 @@
 import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, zoom, zoomIdentity, zoomTransform, pointer } from 'd3';
 import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
-// import { interaction } from '../LinkedInteraction';
+import { interaction } from '../LinkedInteraction';
 
 // variables to be exported
 let svg, node, link;
@@ -38,7 +38,7 @@ const NodeLink = (container, data) => {
     svg = select(container)
     .append("svg")
     .attr("viewBox", [0, 0, 648, 1152]) //make 5x smaller
-    .on("click", reset);
+    // .on("click", reset);
 
     // Create and append tooltip to the div container
     var tooltipDiv = select(container)
@@ -86,8 +86,8 @@ const NodeLink = (container, data) => {
               .style("opacity", 0)
           });
     // On click functionality
-    node
-        .on("click", clicked);
+    // node
+    //     .on("click", clicked);
 
     // Add one dot in the legend for each name.
     legendDiv.selectAll("mydots")
@@ -237,7 +237,7 @@ const NodeLink = (container, data) => {
         });
     };
 
-    // interaction();
+    interaction();
     svg.call(zoomAttr);
 }
 

@@ -1,7 +1,7 @@
 import { select, zoom, zoomIdentity, zoomTransform, scaleBand, scalePoint } from 'd3';
 import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
-// import { interaction } from '../LinkedInteraction';
+import { interaction } from '../LinkedInteraction';
 
 // variables to be exported
 let svg, node, link;
@@ -47,7 +47,7 @@ const ChordGraph = (container, data) => {
     svg = select(container)
         .append("svg")
         .attr("viewBox", [0, 0, 648, 1152])
-        .on("click", reset);
+        // .on("click", reset);
 
     // Create and append tooltip to the div container
     var tooltipDiv = select(container).append("div")
@@ -133,8 +133,8 @@ const ChordGraph = (container, data) => {
         });
 
     // On click functionality
-    node
-        .on("click", clicked);
+    // node
+    //     .on("click", clicked);
 
     // Add one dot in the legend for each name.
     legendDiv.selectAll("mydots")
@@ -234,7 +234,7 @@ const ChordGraph = (container, data) => {
         document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: " + d.sentiment;
     };
 
-    // interaction()
+    interaction();
     svg.call(zoomAttr);
 }
 
