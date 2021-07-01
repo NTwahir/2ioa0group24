@@ -184,7 +184,7 @@ const NodeLink = (container, data) => {
               "Email: " + d.email
               )
           .style("left", (event.pageX + 28) + "px")
-          .style("top", (event.pageY) + "px");
+          .style("top", (event.pageY - 162) + "px");
     }
 
     function toggle() {
