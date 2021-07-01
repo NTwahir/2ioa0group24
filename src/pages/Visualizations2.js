@@ -3,7 +3,7 @@ import { Graph } from '../Graph';
 import { Link } from 'react-router-dom';
 import CSS from '../CSS/NodeLink.module.css';
 
-const { gridContainer, titles, node, chord, info, vis1, vis2, introduction, important } = CSS;
+const { gridContainer, titles, node, chord, info, vis1, vis2, SvgThree, introduction, important } = CSS;
 
 const Visualizations2 = ({ data }) => {
     return (
@@ -39,7 +39,7 @@ const Visualizations2 = ({ data }) => {
                 <p id="nodeEmailsSent">Number of Emails sent: </p>
                 <p id="nodeEmailAddress">Email: </p>
                 <p id="nodeMeanSentiment">Average sentiment: </p>
-                {/* <div className={bar}>
+                {/* <div className={SvgThree}>
                     <Graph data={data} type={3}/>
                 </div> */}
             </div>

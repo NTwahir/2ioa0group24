@@ -1,9 +1,10 @@
-import { scaleBand, scaleLinear, select, axisBottom, axisLeft, max } from 'd3';
+import { scaleTime, extent, scaleLinear, select, axisBottom, axisLeft, line, arc, timeParse, scaleBand } from 'd3';
 import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
+import { nest } from 'd3-collection';
 
 // Destructure css styles
-const { tooltip, legend, SvgThree } = CSS;
+const { SvgThree } = CSS;
 // Set the dimensions and margins of the graph
 const 
 { screen } = window,
@@ -14,17 +15,35 @@ margin = {top: 10, right: 30, bottom: 90, left: 40},
 const NodeGraph = (container, data) => {
 
     data = DataProcess(data);
+    const { uniqueNodes } = data;    
 
-    var sentimentPerDay = data;
-    let ar = [];
 
-    Array.from(sentimentPerDay).forEach(id => {
-        id.values.forEach(e => {
-                ar.push(e.date.value);
-            });
-        });
+    // Array.from(uniqueNodes[0]).forEach(n => {
+    //     n.values().forEach(e => {
+    //             ar.push(e.date.values());
+    //         });
+    //     });
 
-    console.log(ar)
+    // ar.forEach(id => {
+    //     id.values.forEach(date => {
+    //         date.value.forEach(e => {
+    //             ar.push(e.sentiment);
+    //         });
+    //     });
+    // });
+
+    let ar = uniqueNodes[0];
+    let dates = [];
+    let sentiments = []
+
+    ar.values.forEach(function(d) { 
+        dates.push(d.date)
+        sentiments.push(d.sentiment) })
+
+    dates.forEach(function(d) {
+        return new Date(d.date)
+    })
+    console.log(dates, sentiments, ar)
 
     var svg = select(container)
     .append("svg")
@@ -33,8 +52,8 @@ const NodeGraph = (container, data) => {
 
     // X axis
     var x = scaleBand()
-    .range([ -1, 1 ])
-    .domain(ar)
+    .domain(extent(dates))
+    .range([ 0, width ])
     .padding(0.2);
 
     svg.append("g")
@@ -46,33 +65,39 @@ const NodeGraph = (container, data) => {
 
     // Add Y axis
     var y = scaleLinear()
-    .domain(ar)
-    .range([ -1, 1 ]);
+    .domain([ -1, 1 ])
+    .range([ height, 0 ]);
     svg.append("g")
     .call(axisLeft(y));
 
-    // Bars
-    svg.selectAll("mybar")
-    .data(sentimentPerDay)
-    .exit()
-    .remove()
-
-    svg.selectAll("mybar")
-    .data(sentimentPerDay)
+    // Add line
+    svg.append("path")
+    .datum(data)
+    .attr("fill", "none")
+    .attr("stroke", "#69b3a2")
+    .attr("stroke-width", 1.5)
+    .attr("d", line()
+      .x(function(d) { return x(d.date) })
+      .y(function(d) { return y(d.value) })
+      )
+  // Add the points
+    svg
+    .append("g")
+    .selectAll("dot")
+    .data(data)
     .enter()
-    .append("rect")
-    .attr("x", function(d) { return x(d.key); })
-    .attr("y", function(d) { return y(d.value); })
-    .attr("width", x.bandwidth())
-    .attr("height", function(d) { return height - y(d.value); })
-    .attr("fill", "#69b3a2")
+    .append("circle")
+      .attr("cx", function(d) { return x(d.date) } )
+      .attr("cy", function(d) { return y(d.sentiment) } )
+      .attr("r", 5)
+      .attr("fill", "#69b3a2")
 
     // Animation
     svg.selectAll("rect")
     .transition()
     .duration(800)
-    .attr("y", d => y(d.value))
-    .attr("height", d => height - y(d.value))
+    .attr("y", d => y(d.sentiment))
+    .attr("height", d => height - y(d.sentiment))
     .delay((d,i) => {console.log(i); return i*100})
 
 }

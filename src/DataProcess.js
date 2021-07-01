@@ -39,7 +39,6 @@ const DataProcess = (data) => {
         return sentiment;
     })
     .entries(data);
-    console.log({sentimentPerDay});
 
     // 10 most negative sent messages
         // TODO
@@ -125,7 +124,7 @@ const DataProcess = (data) => {
     );
 
 
-    let processedData = {"nodes": nodes, "links": links, "jobs": jobs, "stats": stats, "sortedNodes": sortedNodes};
+    let processedData = {"nodes": nodes, "links": links, "jobs": jobs, "stats": stats, "sortedNodes": sortedNodes, "uniqueNodes": uniqueNodes};
     // TODO: get the count of msgs and append to links.thickness
 
     // Console debug
