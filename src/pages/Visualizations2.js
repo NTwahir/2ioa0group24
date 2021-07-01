@@ -12,7 +12,7 @@ const Visualizations2 = ({ data }) => {
             <div className={vis1}>
                 <Graph data={data} type={1} />
             </div>
-            <div className={introduction} id="toolIntro">
+            <div className={introduction} id="toolIntro" style={{display: "block"}}>
                 <h1>Welcome to CSVIZ!</h1>
                 <p>This interactive visualisation tool provides you with two visualisations of dynamic network data.</p>
                 <p>The dataset comes from Enron, which, if you're interested, is covered in more depth in our <Link to="/" > homepage.</Link></p>
