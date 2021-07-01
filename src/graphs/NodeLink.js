@@ -150,9 +150,10 @@ const NodeLink = (container, data) => {
               "User ID: " + d.id + "</br>" + 
               "Number of Emails sent: " + stats[d.id] + "</br>" +
               "Email: " + d.email
-              )
-          .style("left", (event.pageX + 28) + "px")
-          .style("top", (event.pageY - 162) + "px");
+            )
+            .style("display", "block")
+            .style("left", (event.pageX + 28) + "px")
+            .style("top", (event.pageY - 162) + "px");
     }
 
     interaction();

@@ -164,9 +164,10 @@ const ChordGraph = (container, data) => {
               "User ID: " + d.id + "</br>" + 
               "Number of Emails sent: " + stats[d.id] + "</br>" +
               "Email: " + d.email
-              )
-          .style("left", (event.pageX + 28) + "px")
-          .style("top", (event.pageY) + "px");
+            )
+            .style("display", "block")
+            .style("left", (80) + "px")
+            .style("top", (event.pageY - 162) + "px");
         link
           .style('stroke', function (link_d) { return link_d.source === d.id || link_d.target === d.id ? '#69b3b2' : '#b8b8b8';})
           .style('stroke-width', function (link_d) { return link_d.source === d.id || link_d.target === d.id ? 4 : 1;})

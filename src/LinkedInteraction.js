@@ -21,7 +21,6 @@ height = 1152 - margin.top - margin.bottom;
 /**Main function */
 function interaction() {
 
-    console.log({zoomAttr});
     let links = selectAll("line");
     let paths = selectAll("path");
     let svg1 = select("#node-edge");
