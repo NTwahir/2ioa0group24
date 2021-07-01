@@ -1,10 +1,10 @@
-import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, zoom, zoomIdentity, zoomTransform, pointer } from 'd3';
+import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, zoom, zoomIdentity } from 'd3';
 import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
 import { interaction } from '../LinkedInteraction';
 
 // variables to be exported
-let svg, node, link;
+const s = 0;
 
 // Destructure css styles f
 const { tooltip, legend } = CSS;
@@ -35,34 +35,31 @@ const NodeLink = (container, data) => {
     ];
 
     // Append the svg object to the div container
-    svg = select(container)
+    let svg = select(container)
     .append("svg")
-    .attr("viewBox", [0, 0, 648, 1152]) //make 5x smaller
-    // .on("click", reset);
+    .attr("viewBox", [0, 0, width, height])
 
     // Create and append tooltip to the div container
-    var tooltipDiv = select(container)
+    let tooltipDiv = select(container)
     .append("div")
     .attr("class", tooltip)
     .style("opacity", 0);
 
     // Initialize Legend
-    var color = scaleOrdinal().domain(jobs).range(colors);
-    var legendDiv = select(container)
+    let color = scaleOrdinal().domain(jobs).range(colors);
+    let legendDiv = select(container)
     .append("div")
     .attr("class", legend)
     .append("svg")
     .attr("height", "215px");
 
-    // boolean used in toggle() to check if a node has been clicked
-    var showInfo = false;
-
-    var graph = svg
+    // Create graph group, containing all the elements of the graph
+    let graph = svg
     .append("g")
     .attr("id", "graph");
 
     // Initialize the links
-    link = graph
+    let link = graph
         .selectAll("line")
         .data(links)
         .enter()
@@ -71,7 +68,7 @@ const NodeLink = (container, data) => {
         .style("stroke-width", 1)
 
     // Initialize the nodes
-    node = graph
+    let node = graph
         .selectAll("circle")
         .data(nodes)
         .enter()
@@ -85,9 +82,6 @@ const NodeLink = (container, data) => {
               .duration(500)
               .style("opacity", 0)
           });
-    // On click functionality
-    // node
-    //     .on("click", clicked);
 
     // Add one dot in the legend for each name.
     legendDiv.selectAll("mydots")
@@ -115,15 +109,16 @@ const NodeLink = (container, data) => {
 
     // forceSimulation will generate (x,y) pairs for nodes and links,
     // which can be dynamically updated, for interaction.
-    var simulation = forceSimulation(nodes);              // Force algorithm is applied to data.nodes
+    let simulation = forceSimulation(nodes);              // Force algorithm is applied to data.nodes
         simulation.force("link", forceLink()                    // This force provides links between nodes
                 .id(d => d.id)                    // This links the node.name 
                 .links(links)                             // to the source/target
                 .distance(0).strength(0.05)
         )
         .force("charge", forceManyBody().strength(-4000))        // This adds repulsion between nodes.
-        .force("center", forceCenter(1152 / 2, 648 / 2))    // This force attracts nodes to the center of the svg area                   
+        .force("center", forceCenter(height / 2, width / 2))    // This force attracts nodes to the center of the svg area                   
         .on("tick", ticked);                                // The "tick" tag specifies when the nodes (x,y) should change
+     
         
     /** FUNCTIONS */    
     // This function is run at each iteration of the force algorithm, updating the nodes position.
@@ -141,37 +136,10 @@ const NodeLink = (container, data) => {
             .attr("cy", d => d.y);
     }
 
-    // Transforms the graph group on drag/double click
-    function zoomed({ transform }) {
-      graph.attr("transform", transform);
-    }
-    
-    // Zoom attribute, which sets the [min, max] zoom and calls zoomed
-    const zoomAttr = zoom()
-        .scaleExtent([0.1,80])
-        .on("zoom", zoomed);
 
-    // Resets viewbox to starting point
-    function reset() {
-        showInfo = false;
-        toggle()
-        document.getElementById("nodeName").innerHTML = "Name: ";
-        document.getElementById("nodeTitle").innerHTML = "Job title: ";
-        document.getElementById("nodeUserID").innerHTML = "User ID: ";
-        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: ";
-        document.getElementById("nodeEmailAddress").innerHTML = "Email: ";
-        document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: ";
-        // Return svg to starting position
-        svg.transition().duration(750).call(
-            zoomAttr.transform,
-            zoomIdentity,
-            zoomTransform(svg.node()).invert([width / 2, height / 2])
-        );
-        // Set link color to default
-        link.style("stroke", "#aaa");
-    }
 
-    // Mouse hover function
+
+    /** Mouse hover function */
     function mouseOver (event,d) {
         tooltipDiv.transition()
           .duration(200)
@@ -187,58 +155,19 @@ const NodeLink = (container, data) => {
           .style("top", (event.pageY - 162) + "px");
     }
 
-    function toggle() {
-        var intro = document.getElementById("toolIntro");
-        var description = document.getElementById("nodeDescription")
-        if (intro.style.display === "block" && showInfo === true) {
-            intro.style.display = "none";
-            description.style.display = "block";
-            showInfo = false;
-        } else {
-            intro.style.display = "block";
-            description.style.display = "none";
-        }
-      } 
-
-    // Click function
-    function clicked(event, d) {
-        showInfo = true;
-        toggle()
-        document.getElementById("nodeName").innerHTML = "Name: " + d.name;
-        document.getElementById("nodeTitle").innerHTML = "Job title: " + d.job.name;
-        document.getElementById("nodeUserID").innerHTML = "User ID: " + d.id;
-        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: " + stats[d.id];
-        document.getElementById("nodeEmailAddress").innerHTML = "Email: " + d.email;
-        document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: " + d.sentiment;
-        highlight(d);
-        const {x, y} = d;
-        event.stopPropagation();
-        svg.transition().duration(750).call(
-          zoomAttr.transform,
-          zoomIdentity
-            .translate(width / 2, height / 2)
-            .scale(2)
-            .translate(-x, -y),
-          pointer(event, svg.node())
-        );
-    };
-
-    /** Highlights links of selected node, 
-     * either red or green based of if the email was sent 
-     * or received respectively. 
-     */
-    function highlight(d) {
-        link.style("stroke", datum => {
-            let sourceId = datum.source.id;
-            let targetId = datum.target.id;
-            return sourceId === d.id ? "red"
-                : targetId === d.id ? "green"
-                : "";
-        });
-    };
-
     interaction();
     svg.call(zoomAttr);
 }
 
+/** Transforms the graph group on drag/double click */
+function zoomed({ transform }) {
+    select("#graph").attr("transform", transform);
+}
+
+/** Zoom attribute, which sets the [min, max] zoom and calls zoomed */
+const zoomAttr = zoom()
+    .scaleExtent([0.1,80])
+    .on("zoom", zoomed);
+
+export { zoomAttr, zoomIdentity };
 export default NodeLink;

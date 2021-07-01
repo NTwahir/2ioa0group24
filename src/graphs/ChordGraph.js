@@ -1,4 +1,4 @@
-import { select, zoom, zoomIdentity, zoomTransform, scaleBand, scalePoint } from 'd3';
+import { select, scaleBand, scalePoint } from 'd3';
 import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
 import { interaction } from '../LinkedInteraction';
@@ -13,15 +13,8 @@ const { tooltip, legend } = CSS;
 const 
 { screen } = window,
 margin = {top: 10, right: 30, bottom: 30, left: 40},
-width = (screen.width) - margin.left - margin.right,
-height = (screen.height) - margin.top - margin.bottom;
-let
-start = 0,
-end = 0;
-
-// boolean used in toggle() to check if a node has been clicked
-var showInfo = false;
-
+width = 648 - margin.left - margin.right,
+height = 1152 - margin.top - margin.bottom;
 
 const ChordGraph = (container, data) => {
     // Processs the dataset into nodes and links
@@ -46,8 +39,7 @@ const ChordGraph = (container, data) => {
     // append the svg object to the body of the page
     svg = select(container)
         .append("svg")
-        .attr("viewBox", [0, 0, 648, 1152])
-        // .on("click", reset);
+        .attr("viewBox", [0, 0, width, height])
 
     // Create and append tooltip to the div container
     var tooltipDiv = select(container).append("div")
@@ -62,6 +54,7 @@ const ChordGraph = (container, data) => {
     .append("svg")
     .attr("height", "215px");
     
+    // Create graph group, containing all the elements of the graph
     var graph = svg
     .append("g")
     .attr("id", "graph");
@@ -98,8 +91,8 @@ const ChordGraph = (container, data) => {
     .enter()
     .append('path')
     .attr('d', d => {
-        start = y(idToNode[d.source].name)    // X position of start node on the X axis
-        end = y(idToNode[d.target].name)      // X position of end node
+        let start = y(idToNode[d.source].name)    // X position of start node on the X axis
+        let end = y(idToNode[d.target].name)      // X position of end node
         return ['M', 25, start, //height-30,    // the arc starts at the coordinate x=start, y=height-30 (where the starting node is)
         'A',                            // This means we're gonna build an elliptical arc
         (start - end)/2, ',',    // Next 2 lines are the coordinates of the inflexion point. Height of this point is proportional with start - end distance
@@ -160,36 +153,6 @@ const ChordGraph = (container, data) => {
 
 
     /** FUNCTIONS */   
-    // Transforms the graph group on drag/double click
-    function zoomed({ transform }) {
-        graph.attr("transform", transform);
-      }
-    
-    // Zoom attribute, which sets the [min, max] zoom and calls zoomed
-    const zoomAttr = zoom()
-        .scaleExtent([0.1,80])
-        .on("zoom", zoomed);
-
-    // Resets viewbox to starting point
-    function reset() {
-        showInfo = false;
-        toggle()
-        document.getElementById("nodeName").innerHTML = "Name: ";
-        document.getElementById("nodeTitle").innerHTML = "Job title: ";
-        document.getElementById("nodeUserID").innerHTML = "User ID: ";
-        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: ";
-        document.getElementById("nodeEmailAddress").innerHTML = "Email: ";
-        document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: ";
-        // Return svg to starting position
-        svg.transition().duration(750).call(
-            zoomAttr.transform,
-            zoomIdentity,
-            zoomTransform(svg.node()).invert([width / 2, height / 2])
-        );
-        // Set link color to default
-        link.style("stroke", "#aaa");
-    }
-
     // Mouse hover function
     function mouseOver (event,d) {
         tooltipDiv.transition()
@@ -209,35 +172,8 @@ const ChordGraph = (container, data) => {
           .style('stroke-width', function (link_d) { return link_d.source === d.id || link_d.target === d.id ? 4 : 1;})
     }
 
-    function toggle() {
-        var intro = document.getElementById("toolIntro");
-        var description = document.getElementById("nodeDescription")
-        if (intro.style.display === "block" && showInfo === true) {
-            intro.style.display = "none";
-            description.style.display = "block";
-            showInfo = false;
-        } else {
-            intro.style.display = "block";
-            description.style.display = "none";
-        }
-      } 
-
-    // Click function
-    function clicked(event, d) {
-        showInfo = true;
-        toggle()
-        document.getElementById("nodeName").innerHTML = "Name: " + d.name;
-        document.getElementById("nodeTitle").innerHTML = "Job title: " + d.job.name;
-        document.getElementById("nodeUserID").innerHTML = "User ID: " + d.id;
-        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: " + stats[d.id];
-        document.getElementById("nodeEmailAddress").innerHTML = "Email: " + d.email;
-        document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: " + d.sentiment;
-    };
-
     interaction();
-    svg.call(zoomAttr);
-}
+};
 
 
-export { svg, node, link };
 export default ChordGraph;

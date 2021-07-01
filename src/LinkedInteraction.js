@@ -1,6 +1,6 @@
 // Imported values
-import { select, selectAll, zoom, zoomIdentity, zoomTransform, pointer } from 'd3';
-
+import { select, selectAll, zoom, zoomTransform, pointer } from 'd3';
+import { zoomAttr, zoomIdentity } from './graphs/NodeLink';
 
 // Set the dimensions and margins of the graph
 const 
@@ -8,19 +8,20 @@ margin = {top: 10, right: 30, bottom: 30, left: 40},
 width = 648 - margin.left - margin.right,
 height = 1152 - margin.top - margin.bottom;
 
-// Zoom attribute, which sets the [min, max] zoom and calls zoomed
-const zoomAttr = zoom()
-    .scaleExtent([0.1,80])
-    .on("zoom", zoomed);
+// // Zoom attribute, which sets the [min, max] zoom and calls zoomed
+// const zoomAttr = zoom()
+//     .scaleExtent([0.1,80])
+//     .on("zoom", zoomed);
 
-// Transforms the graph group on drag/double click
-function zoomed({ transform }) {
-    select("#graph").attr("transform", transform);
-    }
+// // Transforms the graph group on drag/double click
+// function zoomed({ transform }) {
+//     select("#graph").attr("transform", transform);
+//     }
 
 /**Main function */
 function interaction() {
 
+    console.log({zoomAttr});
     let links = selectAll("line");
     let paths = selectAll("path");
     let svg1 = select("#node-edge");
@@ -30,11 +31,11 @@ function interaction() {
     .on("click", (event, d) => {
         highlight(d, links, paths);
         toggle(d, "none", "block");
-        position(event, d, svg1);
+        position(event, d, svg1, zoomAttr);
     })
 
-    svg1.on("click", () => reset(links, paths, svg1));
-    svg2.on("click", () => reset(links, paths, svg1))
+    svg1.on("click", () => reset(links, paths, svg1, zoomAttr));
+    svg2.on("click", () => reset(links, paths, svg1, zoomAttr));
 };
 
 /** Highlights links of selected node, 
@@ -43,7 +44,6 @@ function interaction() {
  */
 function highlight(d, links, paths) {
 
-    console.log({ d, links, paths });
     links
         .style("stroke", datum => {
             let sourceId = datum.source.id;
@@ -90,12 +90,12 @@ function toggle(d = null, introDisplay = "block", desDisplay = "none") {
 /** Positions node-edge graph's selected node to
  *  the center of the graph.
  */
-function position(event, d, svg) {
+function position(event, d, svg, zoomAttr) {
 
     let goodCricle = svg.selectAll("circle").filter((datum) => {
         return datum.id === d.id;
     })
-    console.log(goodCricle.datum());
+
     const {x, y} = goodCricle.datum();
     event.stopPropagation();
     svg.transition().duration(750).call(
@@ -109,18 +109,19 @@ function position(event, d, svg) {
 };
 
 // Resets viewbox to starting point
-function reset(links, paths, svg1) {
+function reset(links, paths, svg, zoomAttr) {
 
     toggle()
     // Return svg to starting position
-    svg1.transition().duration(750).call(
+    svg.transition().duration(750).call(
         zoomAttr.transform,
         zoomIdentity,
-        zoomTransform(svg1.node()).invert([width / 2, height / 2])
+        zoomTransform(svg.node()).invert([width / 2, height / 2])
     );
     // Set link color to default
     links.style("stroke", "#aaa");
     paths.style("stroke", "#aaa");
 }
+
 
 export { interaction };
