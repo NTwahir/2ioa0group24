@@ -9,7 +9,7 @@ const Visualizations2 = ({ data }) => {
     return (
         <div className={gridContainer}>
             <h1 id="one" className={`${titles} ${node}`}>Node-edge graph of email network</h1>
-            <div className={vis1}>
+            <div className={vis1} id="node-edge">
                 <Graph data={data} type={1} />
             </div>
             <div className={introduction} id="toolIntro" style={{display: "block"}}>
@@ -44,7 +44,7 @@ const Visualizations2 = ({ data }) => {
                 </div> */}
             </div>
             <h1 id="two" className={`${titles} ${chord}`}>Chord graph of email network</h1>
-            <div className={vis2}>
+            <div className={vis2} id="chord">
                 <Graph data={data} type={2}/>
             </div>
         </div>
