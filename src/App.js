@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { csv } from 'd3';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, HashRouter as Router, Switch } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Visualizations2 from './pages/Visualizations2';
@@ -23,10 +23,14 @@ function App() {
   return (
     <div className="App">
       <NavBar/>
-        <Route exact path="/" component={Home}/>
-        <Route exact path="/About" component={About}/>
-        <Route exact path="/Visualizations" render={() => (
-            <Visualizations2 data={data} />)}/>
+      <Router basename={process.env.PUBLIC_URL}>
+          <Switch>
+            <Route exact path="/" component={Home}/>
+            <Route exact path="/About" component={About}/>
+            <Route exact path="/Visualizations" render={() => (
+                <Visualizations2 data={data} />)}/>
+          </Switch>
+      </Router>
       <Footer/>
     </div>
   )
