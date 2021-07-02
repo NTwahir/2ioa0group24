@@ -1,16 +1,15 @@
-import { scaleTime, extent, scaleLinear, select, axisBottom, axisLeft, line, arc, timeParse, scaleBand } from 'd3';
+import { extent, scaleLinear, select, axisBottom, axisLeft, line, scaleBand } from 'd3';
 import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
-import { nest } from 'd3-collection';
+// import { nest } from 'd3-collection';
 
 // Destructure css styles
 const { SvgThree } = CSS;
 // Set the dimensions and margins of the graph
 const 
-{ screen } = window,
 margin = {top: 10, right: 30, bottom: 90, left: 40},
-    width = 460 - margin.left - margin.right,
-    height = 450 - margin.top - margin.bottom;
+width = 460 - margin.left - margin.right,
+height = 450 - margin.top - margin.bottom;
 
 const NodeGraph = (container, data) => {
 

@@ -128,7 +128,7 @@ const DataProcess = (data) => {
     // TODO: get the count of msgs and append to links.thickness
 
     // Console debug
-    console.log({uniqueNodes, processedData, data, linkInfo, jobColor, sortedNodes});
+    console.log({uniqueNodes, processedData, data, linkInfo, jobColor, sortedNodes, sentimentPerDay});
 
 
     return processedData;

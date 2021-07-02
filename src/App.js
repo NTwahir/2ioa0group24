@@ -3,7 +3,6 @@ import { csv } from 'd3';
 import { Route } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
-import Visualizations from './pages/Visualizations';
 import Visualizations2 from './pages/Visualizations2';
 import NavBar from './NavBar';
 import Footer from './Footer';
@@ -25,8 +24,6 @@ function App() {
     <div className="App">
       <NavBar/>
       <Route exact path="/" component={Home}/>
-      <Route exact path="/visualizations" render={() => (
-        <Visualizations data={data} />)}/>
       <Route exact path="/about" component={About}/>
       <Route exact path="/Visualizations2" render={() => (
         <Visualizations2 data={data} />)}/>

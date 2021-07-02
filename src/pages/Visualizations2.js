@@ -3,7 +3,7 @@ import { Graph } from '../Graph';
 import { Link } from 'react-router-dom';
 import CSS from '../CSS/NodeLink.module.css';
 
-const { gridContainer, titles, node, chord, info, vis1, vis2, SvgThree, introduction, important } = CSS;
+const { gridContainer, titles, node, chord, info, vis1, vis2, introduction, important } = CSS;
 
 const Visualizations2 = ({ data }) => {
     return (

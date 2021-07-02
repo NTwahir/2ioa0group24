@@ -3,8 +3,6 @@ import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
 import { interaction } from '../LinkedInteraction';
 
-// variables to be exported
-const s = 0;
 
 // Destructure css styles f
 const { tooltip, legend } = CSS;

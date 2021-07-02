@@ -1,5 +1,5 @@
 // Imported values
-import { select, selectAll, zoom, zoomTransform, pointer } from 'd3';
+import { select, selectAll, zoomTransform, pointer } from 'd3';
 import { zoomAttr, zoomIdentity } from './graphs/NodeLink';
 
 // Set the dimensions and margins of the graph
@@ -68,7 +68,7 @@ function toggle(d = null, introDisplay = "block", desDisplay = "none") {
         document.getElementById("nodeName").innerHTML = "Name: " + d.name;
         document.getElementById("nodeTitle").innerHTML = "Job title: " + d.job.name;
         document.getElementById("nodeUserID").innerHTML = "User ID: " + d.id;
-        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: " + "";//stats[d.id];
+        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: ";//stats[d.id];
         document.getElementById("nodeEmailAddress").innerHTML = "Email: " + d.email;
         document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: " + d.sentiment;
     } else {

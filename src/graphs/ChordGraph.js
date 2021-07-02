@@ -3,15 +3,12 @@ import DataProcess from '../DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
 import { interaction } from '../LinkedInteraction';
 
-// variables to be exported
-let svg, node, link;
 
 // Destructure css styles
 const { tooltip, legend } = CSS;
 
 // Set the dimensions and margins of the graph
 const 
-{ screen } = window,
 margin = {top: 10, right: 30, bottom: 30, left: 40},
 width = 648 - margin.left - margin.right,
 height = 1152 - margin.top - margin.bottom;
@@ -37,25 +34,25 @@ const ChordGraph = (container, data) => {
     ];
 
     // append the svg object to the body of the page
-    svg = select(container)
+    let svg = select(container)
         .append("svg")
         .attr("viewBox", [0, 0, width, height])
 
     // Create and append tooltip to the div container
-    var tooltipDiv = select(container).append("div")
+    let tooltipDiv = select(container).append("div")
     .attr("class", tooltip)
     .style("opacity", 0);
 
     // Initialize Legend
-    var color = scaleBand().domain(jobs).range(colors);
-    var legendDiv = select(container)
+    let color = scaleBand().domain(jobs).range(colors);
+    let legendDiv = select(container)
     .append("div")
     .attr("class", legend)
     .append("svg")
     .attr("height", "215px");
     
     // Create graph group, containing all the elements of the graph
-    var graph = svg
+    let graph = svg
     .append("g")
     .attr("id", "graph");
 
@@ -83,7 +80,7 @@ const ChordGraph = (container, data) => {
     // Cool, now if I do idToNode["2"].name I've got the name of the node with id 2
 
     // Add the links
-    link = graph
+    let link = graph
     .append("g")
     .attr("class", "links")
     .selectAll("links")
@@ -104,6 +101,7 @@ const ChordGraph = (container, data) => {
     .attr("stroke", "#aaa");
 
     // Add the circle for the nodes
+    let node;
     node = graph
     .append("g")
     .attr("class", "nodes")
@@ -124,10 +122,6 @@ const ChordGraph = (container, data) => {
             .style('stroke', '#aaa')
             .style('stroke-width', '1')
         });
-
-    // On click functionality
-    // node
-    //     .on("click", clicked);
 
     // Add one dot in the legend for each name.
     legendDiv.selectAll("mydots")
