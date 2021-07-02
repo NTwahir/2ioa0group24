@@ -23,12 +23,10 @@ function App() {
   return (
     <div className="App">
       <NavBar/>
-      <Router basename={process.env.PUBLIC_URL}>
         <Route exact to="/" component={Home}/>
         <Route exact to="/About" component={About}/>
         <Route exact to="/Visualizations" render={() => (
             <Visualizations2 data={data} />)}/>
-      </Router>
       <Footer/>
     </div>
   )
