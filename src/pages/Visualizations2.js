@@ -1,5 +1,5 @@
 import React from 'react';
-import { Graph } from '../Graph';
+import { Graph } from '../Components/Graph';
 import { Link } from 'react-router-dom';
 import CSS from '../CSS/NodeLink.module.css';
 

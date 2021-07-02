@@ -1,5 +1,5 @@
 import { extent, scaleLinear, select, axisBottom, axisLeft, line, scaleBand } from 'd3';
-import DataProcess from '../DataProcess';
+import DataProcess from '../JS/DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
 // import { nest } from 'd3-collection';
 

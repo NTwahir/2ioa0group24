@@ -1,7 +1,7 @@
 import { forceLink, forceManyBody, select, forceSimulation, forceCenter, scaleOrdinal, zoom, zoomIdentity } from 'd3';
-import DataProcess from '../DataProcess';
+import DataProcess from '../JS/DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
-import { interaction } from '../LinkedInteraction';
+import { interaction } from '../JS/LinkedInteraction';
 
 
 // Destructure css styles f

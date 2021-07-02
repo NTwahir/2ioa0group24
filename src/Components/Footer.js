@@ -1,7 +1,7 @@
 import React from 'react';
 import { Site } from "tabler-react";
-import FooterImage from './FooterImage.js';
-import CSS from './CSS/FooterImage.module.css';
+import FooterImage from './FooterImage';
+import CSS from '../CSS/FooterImage.module.css';
 
 const { footerTab } = CSS;
 

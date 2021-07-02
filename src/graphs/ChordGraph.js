@@ -1,7 +1,7 @@
 import { select, scaleBand, scalePoint } from 'd3';
-import DataProcess from '../DataProcess';
+import DataProcess from '../JS/DataProcess';
 import CSS from '../CSS/NodeLink.module.css';
-import { interaction } from '../LinkedInteraction';
+import { interaction } from '../JS/LinkedInteraction';
 
 
 // Destructure css styles
@@ -101,18 +101,18 @@ const ChordGraph = (container, data) => {
     .attr("stroke", "#aaa");
 
     // Add the circle for the nodes
-    let node;
-    node = graph
+    let node = graph
     .append("g")
     .attr("class", "nodes")
     .selectAll("nodes")
     .data(nodes)
     .enter()
     .append("circle")
-        .attr("cy", d => y(d.name))
-        .attr("cx", 25)
-        .attr("r", 5)
-        .style("fill",  n => n.job.color)
+    .attr("cy", d => y(d.name))
+    .attr("cx", 25)
+    .attr("r", 5)
+    .style("fill",  n => n.job.color);
+    node
     .on("mouseover", mouseOver)
     .on("mouseout", function(d) {
         tooltipDiv.transition()

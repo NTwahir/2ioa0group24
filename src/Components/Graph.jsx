@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import NodeLink from './graphs/NodeLink';
-import ChordGraph from './graphs/ChordGraph';
-import NodeGraph from './graphs/NodeGraph';
+import NodeLink from '../graphs/NodeLink';
+import ChordGraph from '../graphs/ChordGraph';
+import NodeGraph from '../graphs/NodeGraph';
 
 
 export function Graph({ data, type }) {

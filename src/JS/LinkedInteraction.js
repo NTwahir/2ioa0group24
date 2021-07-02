@@ -1,6 +1,6 @@
 // Imported values
 import { select, selectAll, zoomTransform, pointer } from 'd3';
-import { zoomAttr, zoomIdentity } from './graphs/NodeLink';
+import { zoomAttr, zoomIdentity } from '../graphs/NodeLink';
 
 // Set the dimensions and margins of the graph
 const 
