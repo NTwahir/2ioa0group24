@@ -23,9 +23,9 @@ function App() {
   return (
     <div className="App">
       <NavBar/>
-      <Route exact path={"/"} component={Home}/>
-      <Route path={"/About"} component={About}/>
-      <Route path={"/Visualizations"} render={() => (
+      <Route exact path={process.env.PUBLIC_URL + "/"} component={Home}/>
+      <Route path={process.env.PUBLIC_URL + "/About"} component={About}/>
+      <Route path={process.env.PUBLIC_URL + "/Visualizations"} render={() => (
         <Visualizations2 data={data} />)}/>
       <Footer/>
     </div>
