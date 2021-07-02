@@ -23,9 +23,9 @@ function App() {
   return (
     <div className="App">
       <NavBar/>
-        <Route exact to="/" component={Home}/>
-        <Route exact to="/About" component={About}/>
-        <Route exact to="/Visualizations" render={() => (
+        <Route exact path="/" component={Home}/>
+        <Route exact path="/About" component={About}/>
+        <Route exact path="/Visualizations" render={() => (
             <Visualizations2 data={data} />)}/>
       <Footer/>
     </div>
