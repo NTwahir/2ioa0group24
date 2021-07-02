@@ -19,7 +19,7 @@ height = 1152 - margin.top - margin.bottom;
 //     }
 
 /**Main function */
-function interaction() {
+function interaction(stats) {
 
     let links = selectAll("line");
     let paths = selectAll("path");
@@ -29,7 +29,7 @@ function interaction() {
     selectAll("circle")
     .on("click", (event, d) => {
         highlight(d, links, paths);
-        toggle(d, "none", "block");
+        toggle(d, "none", "block", stats);
         position(event, d, svg1, zoomAttr);
     })
 
@@ -62,13 +62,13 @@ function highlight(d, links, paths) {
 };
 
 /** Toggle function */
-function toggle(d = null, introDisplay = "block", desDisplay = "none") {
+function toggle(d = null, introDisplay = "block", desDisplay = "none", stats) {
 
     if (d) {
         document.getElementById("nodeName").innerHTML = "Name: " + d.name;
         document.getElementById("nodeTitle").innerHTML = "Job title: " + d.job.name;
         document.getElementById("nodeUserID").innerHTML = "User ID: " + d.id;
-        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: ";//stats[d.id];
+        document.getElementById("nodeEmailsSent").innerHTML = "Number of Emails sent: " + stats[d.id];
         document.getElementById("nodeEmailAddress").innerHTML = "Email: " + d.email;
         document.getElementById("nodeMeanSentiment").innerHTML = "Average sentiment: " + d.sentiment;
     } else {

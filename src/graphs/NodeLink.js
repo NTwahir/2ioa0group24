@@ -154,7 +154,7 @@ const NodeLink = (container, data) => {
             .style("top", (event.pageY - 162) + "px");
     }
 
-    interaction();
+    interaction(stats);
     svg.call(zoomAttr);
 }
 

@@ -167,7 +167,7 @@ const ChordGraph = (container, data) => {
           .style('stroke-width', function (link_d) { return link_d.source === d.id || link_d.target === d.id ? 4 : 1;})
     }
 
-    interaction();
+    interaction(stats);
 };
 
 
